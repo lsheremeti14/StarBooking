@@ -1,0 +1,318 @@
+<html>
+
+
+{#   The design of this page is insired by https://codepen.io/afirulaf/pen/djAen   #}
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+<style>
+    /*
+https://codepen.io/overdrivemachines/pen/zrYvBo
+*/
+
+    .res-list {
+        /* max-width: 800px; */
+        margin: 2em;
+    }
+
+    .res-list thead tr th {
+        padding-bottom: 1em;
+    }
+
+    .res-item {
+
+        /* display: flex; */
+        border-bottom: 1px solid #ccc;
+        transition: .5s;
+    }
+
+    .res-item>td {
+        padding-top: 16px;
+        padding-bottom: 16px;
+        vertical-align: middle;
+    }
+
+    .res-item:hover {
+        background: #efefef;
+        /* transition:.5s; */
+    }
+
+    .res-item:last-child {
+        border-bottom: none;
+    }
+
+    .room-number {
+        font-size: 2.85em;
+        font-weight: 700;
+        width: 160px;
+        text-align: right;
+        border-right: 1px solid #ccc;
+        padding-right: 16px;
+    }
+
+    .res-details-c {
+        padding-left: 16px;
+        padding-right: 16px;
+        max-width: 520px;
+    }
+
+    .names {
+        font-weight: 700;
+        line-height: 1.3;
+        padding-bottom: 0.33em;
+        font-size: 1.1em;
+        margin-top: 4px;
+    }
+
+    .res-details {
+        padding-bottom: 0.61em;
+    }
+
+    .res-details>div {
+        font-size: 0.85em;
+        display: inline-block;
+        padding-right: 1em;
+        width: 190px;
+        line-height: 1.3;
+    }
+
+    .res-details>div.res-nights {
+        width: 90px;
+    }
+
+    .res-badges {}
+
+    .res-badges .badge {
+        margin-right: 1em;
+    }
+
+    .res-actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .res-actions a {
+        /* border: 1px solid green; */
+        padding: 1em;
+    }
+    ::-webkit-scrollbar {
+        width: 5px;
+        min-height: 4px;
+    }
+    ::-webkit-scrollbar-track-piece {
+        background:  #D8D8D8;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #7C828B;
+    }
+    .btn-red{
+        background-color: red;
+    }
+    .btn-green{
+        background-color: green;
+    }
+    .head
+    {
+        font-size: 24px;
+        color: #32CCFE;
+        margin-left: 10px;
+        font-weight: 900;
+    }
+    .input_label {
+        width:150px;
+        display: inline-block;
+        text-align: left;
+    }
+    #infos{
+        text-align: left;
+    }
+</style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+<script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
+
+<script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+
+<section id="force-full-height">
+    <table class="res-list">
+        <thead>
+        {% if 0 in empty %}
+        <tr>
+            <th class="head">Room #</th>
+            <th class="head">Details</th>
+        </tr>
+        {% else %}
+            <th colspan="3" class="head">There are no rooms available in this period.</th>
+        {% endif %}
+        </thead>
+        <tbody>
+        {% set e=0 %}
+        {% set all_rooms_empty=true %}
+
+        {% for r in rooms %}
+        <tr class="res-item">
+
+            {% if empty[e]==1 %}
+            {%  if is_granted('ROLE_RECEPTIONIST') or is_granted('ROLE_MANAGER') or is_granted('ROLE_OFFICE') or is_granted('ROLE_FINANCE') %}
+
+                <td class="room-number">{{ r.code }}</td>
+                {% for res in reservations %}
+                    {% if res.getRoom().getId()==r.id %}
+                        <td class="res-details-c">
+                           <div class="names">
+                           {{ res.name }} {{ res.surname }}
+                           </div>
+                            <div class="res-details">
+                             <div class="res-arrival">Arriving: {{ res.startingDate|date('F d, Y') }}</div>
+                              <div class="res-leaving">Leaving: {{ res.endingDate|date('F d, Y') }}</div>
+                                {% set difference = date(res.endingDate|date('Y/m/d')).diff(date(res.startingDate|date('Y/m/d'))) %}
+                                {% set leftDays = difference.days %}
+                                   <div class="res-nights">{{ leftDays }} Nights</div>
+                            </div>
+                            <div class="res-badges">
+                                {% if res.paid==0 %}
+                                    <span id="paid-{{ res.id }}" class="badge btn-red">Unpaid {{ res.price }} ALL</span>
+                                {% else %}
+                                    <span class="badge btn-green">Paid {{ res.price }} ALL</span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="res-actions">
+                                {% if res.paid==0 %}
+                                    <span style="color: green; cursor: pointer" onclick="confirmPayment({{ res.id }},{{ res.price }})">Confirm Payment <i class="fa fa-check" style="color: green;" aria-hidden="true"></i> </span>
+                                {% else %}
+                                    <span></span>
+                                {% endif %}
+                            </div>
+
+                        </td>
+                    {% endif %}
+               {% endfor %}
+                {% endif %}
+           {% else %}
+                        <td class="room-number">{{ r.code }}</td>
+                        <td class="res-details-c">
+                            <div class="names">
+                                [Empty Room]
+                            </div>
+                            <div class="res-details">
+                                {% set difference = date(s_date|date('Y/m/d')).diff(date(e_date|date('Y/m/d'))) %}
+                                {% set leftDays = difference.days %}
+                                {% set to_pay=leftDays* r.price %}
+                                {% if leftDays==1 %}
+                                    <div class="res-arrival">To be paid: {{ to_pay }} ALL for {{ leftDays }} Night</div>
+                                {% else %}
+                                    <div class="res-arrival">To be paid: {{ to_pay }} ALL for {{ leftDays }} Nights</div>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="res-actions">
+                                <div style=" color: #da7908; cursor: pointer;" onclick="useRoom({{ r.id }},'{{ s_date }}', '{{ e_date }}',{{ to_pay }})">Use This Room<i class="fa fa-check" style="color: #da7908;" aria-hidden="true"></i> </div>
+                            </div>
+                        </td>
+
+           {% endif %}
+
+
+        </tr>
+            {% set e=e+1 %}
+
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+</section>
+
+<script>
+
+    function confirmPayment(id,price){
+        bootbox.confirm({
+            message: "Do you confirm the payment?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result == true){
+                    $.ajax({
+                        url: "{{ path('confirm_payment') }}",
+                        type: 'GET',
+                        data: {'id': id },
+                        success: function (response) {
+                            $("#paid-"+id).removeClass("btn-red");
+                            $("#paid-"+id).addClass("btn-green");
+                            $("#paid-"+id).html(price+" ALL");
+
+                        }
+
+                    });
+                }
+            }
+        });
+
+    }
+
+    function useRoom(id, s_date,e_date,to_pay){
+
+        var date=new Date().format('d-m-Y');
+
+        bootbox.confirm("<form id='infos' action=''>\
+                <label class='input_label'>First name:</label><input type='text' id='name'  name='first_name' /><br/>\
+                <label class='input_label'>Last name:</label><input type='text' id='surname'  name='last_name' /><br/>\
+                <label class='input_label'>Personal Nr.:</label><input type='text' id='per_nr'  name='per_nr' /><br/>\
+                <label class='input_label'>Paid :</label><input type='checkbox' id='paid' name='paid' /><br/>\
+             </form>", function(result) {
+            if(result) {
+                var paid=$('input[name="paid"]:checked').length;
+                console.log(paid);
+                var check="";
+                var name=$('#name').val();
+                if(name=="")
+                    check+="Name";
+                var surname=$('#surname').val();
+                if(surname=="")
+                    check+=" - "+"Surname";
+                var per_nr=$('#per_nr').val();
+                if(per_nr=="")
+                    check+=" - "+"Personal nr.";
+                if(check!=""){
+                    bootbox.alert("Please fullfill all the information required. Missing :"+check);
+                }else {
+                    $.ajax({
+                        url: "{{ path('insert_reservation') }}",
+                        type: 'POST',
+                        data: {
+                            'date': date,
+                            'name': name,
+                            'surname': surname,
+                            'starting': s_date,
+                            'ending': e_date,
+                            'price': to_pay,
+                            'room': id,
+                            'per_nr': per_nr,
+                            'paid': paid },
+                        dataType: 'json',
+                        success: function (response) {
+                            document.getElementById('search_by_date').click();
+                        }
+
+                    });
+                }
+            }
+        });
+
+
+    }
+
+</script>
+</html>

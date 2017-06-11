@@ -1,0 +1,169 @@
+@font-face {
+    font-family: layoutFont;
+    src: url(source_sans.ttf);
+}
+
+h3{
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    font-size: 1.2vw !important;
+    background: #000;
+}
+
+.left-section{
+    background: rgba(0,0,100,0.5) !important;
+    font-family: layoutFont !important;
+
+}
+
+.right-section{
+    background: rgba(150,0,0,0.5) !important;
+    border-left: 2px solid white;
+    font-family: layoutFont !important;
+    padding-right: 2% !important;
+
+}
+
+.right-section ol li{
+    font-weight: bold;
+}
+
+
+.table-league{
+    width: 100%;
+    font-family: layoutFont;
+}
+
+.table-league .table-header{
+    background: #000;
+    color: #fff;
+    font-size: 1vw !important;
+}
+.table-league .table-header th{
+    text-align: center;
+}
+.table-league>tbody>tr{
+    text-align: center;
+    font-size: 0.8vw;
+}
+
+.table-league>tbody>tr>td{
+    vertical-align: center !important;
+    font-size: 0.8vw !important;
+    color:white;
+    text-align:center;
+    padding: 6px;
+}
+
+.team-emblem img{
+    width:15px;
+    height: 15px;
+    margin-right: 5px;
+}
+
+.ui-droppable div{
+    color: white;
+    font-size: 1.1vw !important;
+    font-family: layoutFont !important;
+}
+
+.ui-droppable p{
+    margin:0 !important;
+    font-family: layoutFont !important;
+
+}
+
+
+.telesport-logo{
+    float:left;
+    width: 50%;
+    height: 100%;
+    padding-top: 10%;
+}
+
+.telesport-logo img{
+    width: 95%;
+    height: auto;
+    float: left;
+}
+
+.clock {
+    width: 50%;
+    color: #fff;
+    text-align: left;
+    float:left;
+    height: 100%;
+    padding-top: 5%;
+    padding-left: 2%;
+}
+
+.clock div{
+    width: 100%;
+}
+
+.ul-clock {
+    width: 100%;
+    list-style: none;
+    text-align: left;
+    margin-bottom: 0;
+    height: 50%;
+    /*padding: 0 !important;*/
+    padding-left: 5% !important;
+}
+
+.ul-clock li {
+    display: inline;
+    font-size: 2vw !important;
+    text-align: center;
+}
+
+#Date {
+    font-size: 1vw !important;
+    padding-left: 2%;
+}
+
+#point {
+    position: relative;
+}
+
+/* Simple Animation */
+@-webkit-keyframes mymove {
+    0% {opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1.0;
+    }
+}
+
+@-moz-keyframes mymove {
+    0% {
+        opacity: 1.0;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1.0;
+    }
+}
+
+.date-created-font, .date-updated-font{
+    font-size: 1.3em;
+}
+
+.date-created-updated{
+    text-align: center;
+    position: relative;
+    right: 0;
+    top: -10px;
+    margin: auto;
+    left: 0;
+    margin-bottom: 10px;
+}

@@ -1,0 +1,638 @@
+{% extends 'HotelBundle:Default:base.html.twig' %}
+{% block content %}
+    <style>
+
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        caption, th, td {
+            text-align: left;
+            font-weight: normal;
+            vertical-align: middle;
+        }
+
+        q, blockquote {
+            quotes: none;
+        }
+        q:before, q:after, blockquote:before, blockquote:after {
+            content: "";
+            content: none;
+        }
+
+        a img {
+            border: none;
+        }
+
+        article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+            display: block;
+        }
+
+        /* Colors */
+        /* ---------------------------------------- */
+        * {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            text-align: center;
+            font-family: 'Lato', 'sans-serif';
+            font-weight: 400;
+        }
+
+
+        #info_bill {
+            padding: 4em 10%;
+        }
+
+        #info_bill {
+            background-color: #077ABC;
+            color: white;
+            height: 160px;
+            z-index: 10;
+        }
+        #info_bill h1 {
+            font-weight: 400;
+            text-transform: uppercase;
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+        #info_bill h1 i {
+            color: #055a8b;
+        }
+        #info_bill h1 span {
+            font-weight: 300;
+        }
+        #info_bill p {
+            font-weight: 400;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: .05em;
+            margin-bottom: 10px;
+        }
+        #info_bill h3,
+        #info_bill h3 a {
+            color: #32CCFE;
+            position: absolute;
+            float:left;
+            margin-left: 60px;
+            margin-top: 60px;
+        }
+        #info_bill h3 a,
+        #info_bill h3 a a {
+            -moz-transition: color 0.3s;
+            -o-transition: color 0.3s;
+            -webkit-transition: color 0.3s;
+            transition: color 0.3s;
+        }
+        #info_bill h3 a:hover,
+        #info_bill h3 a a:hover {
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        h2.heading {
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: 300;
+            text-align: left;
+            color: #506982;
+            border-bottom: 1px solid #506982;
+            padding-bottom: 3px;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            margin-top: 30px;
+            text-align: left;
+            position: relative;
+        }
+        .controls input[type="text"],
+        .controls input[type="number"],
+        .controls textarea,
+        .controls button,
+        .controls select {
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #c6c6c6;
+            width: 100%;
+            margin-bottom: 18px;
+            color: #888;
+            font-family: 'Lato', 'sans-serif';
+            font-size: 16px;
+            font-weight: 300;
+            background-color: #fff;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            -moz-transition: all 0.3s;
+            -o-transition: all 0.3s;
+            -webkit-transition: all 0.3s;
+            transition: all 0.3s;
+        }
+        .controls input[type="text"]:focus, .controls input[type="text"]:hover,
+        .controls input[type="number"]:focus,
+        .controls input[type="number"]:hover,
+        .controls textarea:focus,
+        .controls textarea:hover,
+        .controls button:focus,
+        .controls button:hover,
+        .controls select:focus,
+        .controls select:hover {
+            outline: none;
+            border-color: #9FB1C1;
+        }
+        .controls input[type="text"]:focus + label, .controls input[type="text"]:hover + label,
+        .controls input[type="number"]:focus + label,
+        .controls input[type="number"]:hover + label,
+        .controls textarea:focus + label,
+        .controls textarea:hover + label,
+        .controls button:focus + label,
+        .controls button:hover + label,
+        .controls select:focus + label,
+        .controls select:hover + label {
+            color: #077ABC;
+            cursor: text;
+        }
+        .controls .fa-sort {
+            position: absolute;
+            right: 10px;
+            top: 17px;
+            color: #999;
+        }
+        .controls select {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        .controls label {
+            position: absolute;
+            left: 8px;
+            top: 12px;
+            color: #999;
+            font-size: 16px;
+            display: inline-block;
+            padding: 4px 10px;
+            font-weight: 400;
+            background-color: rgba(255, 255, 255, 0);
+            pointer-events: none;
+            -moz-transition: color 0.3s, top 0.3s, background-color 0.8s;
+            -o-transition: color 0.3s, top 0.3s, background-color 0.8s;
+            -webkit-transition: color 0.3s, top 0.3s, background-color 0.8s;
+            transition: color 0.3s, top 0.3s, background-color 0.8s;
+        }
+        .controls label.active {
+            top: -13px;
+            color: #555;
+            background-color: white;
+        }
+        .controls textarea {
+            resize: none;
+            height: 200px;
+        }
+        .controls button {
+            cursor: pointer;
+            background-color: #077ABC;
+            border: none;
+            color: #fff;
+            padding: 12px 0;
+        }
+        .controls button:hover {
+            background-color: #0e5a86;
+        }
+
+        .save_bill {
+            cursor: pointer;
+            background-color: #077ABC;
+            border: none;
+            color: #fff;
+            padding: 6px 12px;
+        }
+        .save_bill:hover {
+            background-color: #0e5a86;
+        }
+
+        .add_buy{
+            padding: 40px;
+            position: absolute;
+            top: 200px;
+            padding-top: 30px;
+            height: 80vh;
+            background-color: #d7e5ea;
+            width: 25%;
+            margin-left: 50px;
+        }
+
+        .list_products{
+            width: 60%;
+            float: right;
+            margin-right: 80px;
+
+        }
+
+        /*
+
+    RESPONSTABLE 2.0 by jordyvanraaij
+      Designed mobile first!
+
+    If you like this solution, you might also want to check out the 1.0 version:
+      https://gist.github.com/jordyvanraaij/9069194
+
+    */
+        .responstable {
+            margin: 1em 0;
+            width: 100%;
+            overflow: hidden;
+            background: #FFF;
+            color: #0e5a86;
+            border-radius: 10px;
+            border: 1px solid #077ABC;
+        }
+        .responstable tr {
+            border: 1px solid #D9E4E6;
+        }
+        .responstable tr:nth-child(odd) {
+            background-color: #EAF3F3;
+        }
+        .responstable th {
+            display: none;
+            border: 1px solid #FFF;
+            background-color: #0e5a86;
+            color: #FFF;
+            padding: 1em;
+        }
+        .responstable th:first-child {
+            display: table-cell;
+            text-align: center;
+        }
+        .responstable th:nth-child(2) {
+            display: table-cell;
+        }
+        .responstable th:nth-child(2) span {
+            display: none;
+        }
+        .responstable th:nth-child(2):after {
+            content: attr(data-th);
+        }
+        @media (min-width: 480px) {
+            .responstable th:nth-child(2) span {
+                display: block;
+            }
+            .responstable th:nth-child(2):after {
+                display: none;
+            }
+        }
+        .responstable td {
+            display: block;
+            word-wrap: break-word;
+            max-width: 7em;
+        }
+        .responstable td:first-child {
+            display: table-cell;
+            text-align: center;
+            border-right: 1px solid #D9E4E6;
+        }
+        @media (min-width: 480px) {
+            .responstable td {
+                border: 1px solid #D9E4E6;
+            }
+        }
+        .responstable th, .responstable td {
+            text-align: left;
+            margin: .5em 1em;
+        }
+        @media (min-width: 480px) {
+            .responstable th, .responstable td {
+                display: table-cell;
+                padding: 1em;
+            }
+        }
+
+        .cf:before,
+        .cf:after {
+            content: "";
+            display: table;
+        }
+
+        .cf:after {
+            clear: both;
+        }
+
+        .searchform {
+            background: #f4f4f4;
+            background: rgba(244, 244, 244, .79);
+            border: 1px solid #d3d3d3;
+            left: 20%;
+            padding: 2px 5px;
+            position: relative;
+            margin: 10px 10px 20px -170px;
+            width: 570px;
+            box-shadow: 0 4px 9px rgba(0, 0, 0, .37);
+            -moz-box-shadow: 0 4px 9px rgba(0, 0, 0, .37);
+            -webkit-box-shadow: 0 4px 9px rgba(0, 0, 0, .37);
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px
+        }
+
+        .searchform input,
+        .searchform button {
+            float: left
+        }
+
+        .searchform input {
+            background: #fefefe;
+            border: none;
+            font: 12px/12px 'HelveticaNeue', Helvetica, Arial, sans-serif;
+            margin-right: 5px;
+            padding: 10px;
+            width: 200px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, .4) inset, 1px 1px 1px rgba(255, 255, 255, .75);
+            -moz-box-shadow: 0 0 4px rgba(0, 0, 0, .4) inset, 1px 1px 1px rgba(255, 255, 255, .75);
+            -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, .4) inset, 1px 1px 1px rgba(255, 255, 255, .75);
+            border-radius: 9px;
+            -moz-border-radius: 9px;
+            -webkit-border-radius: 9px
+        }
+
+        .searchform input:focus {
+            outline: none;
+            box-shadow: 0 0 4px #0d76be inset;
+            -moz-box-shadow: 0 0 4px #0d76be inset;
+            -webkit-box-shadow: 0 0 4px #0d76be inset;
+        }
+
+        .searchform input::-webkit-input-placeholder {
+            font-style: italic;
+            line-height: 15px
+        }
+
+        .searchform input:-moz-placeholder {
+            font-style: italic;
+            line-height: 15px
+        }
+
+        .searchform button {
+            background: rgb(52, 173, 236);
+            background: -moz-linear-gradient(top, rgba(52, 173, 236, 1) 0%, rgba(38, 145, 220, 1) 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(52, 173, 236, 1)), color-stop(100%, rgba(38, 145, 220, 1)));
+            background: -webkit-linear-gradient(top, rgba(52, 173, 236, 1) 0%, rgba(38, 145, 220, 1) 100%);
+            background: -o-linear-gradient(top, rgba(52, 173, 236, 1) 0%, rgba(38, 145, 220, 1) 100%);
+            background: -ms-linear-gradient(top, rgba(52, 173, 236, 1) 0%, rgba(38, 145, 220, 1) 100%);
+            background: linear-gradient(to bottom, rgba(52, 173, 236, 1) 0%, rgba(38, 145, 220, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#34adec', endColorstr='#2691dc', GradientType=0);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font: 13px/13px 'HelveticaNeue', Helvetica, Arial, sans-serif;
+            padding: 10px;
+            width: 50px;
+            box-shadow: 0 0 2px #2692dd inset;
+            -moz-box-shadow: 0 0 2px #2692dd inset;
+            -webkit-box-shadow: 0 0 2px #2692dd inset;
+            border-radius: 9px;
+            -moz-border-radius: 9px;
+            -webkit-border-radius: 9px;
+        }
+
+        .searchform button:hover {
+            opacity: .9;
+        }
+        .results{
+            margin-top: 20px;
+            margin: auto;
+            width: 70%;
+            height: auto;
+        }
+        .results2 {
+            margin-top: 20px;
+            margin: auto;
+            width: 70%;
+            height: auto;
+        }
+        .cell{
+             width: 33%;
+        }
+
+
+
+    </style>
+
+    <html style="height: 100%;">
+    <div id="info_bill">
+        <h1 style="float: left;"> <img style="width: 40px; height: 40px;" src="{{ asset('uploads/star.png') }}"> <span>Star Hotel</span> </h1>
+        <p style="float: right; font-size: 25px; margin-top: 25px;">
+            <script> document.write(new Date().toDateString()); </script>
+        </p>
+    </div>
+
+        {#<div class="searchform cf">#}
+            {#<div style="float: left; position: relative"><span style="vertical-align: middle;line-height: 34px;"> Month:</span><input style="float: right;" type="month" id="month" value="{{ 'now'|date('F') }}"> </div>#}
+            {#<div style="float: left; position: relative"> <span style="vertical-align: middle;line-height: 34px;"> Year: </span><input style="float: right;" type="date" id="year" value="{{ 'now'|date('Y') }}"></div>#}
+            {#<button id="search_by_date" style="margin-left: 10px;" onclick="searchByMonth()">Go</button>#}
+        {#</div>#}
+    <button id="add-expense" class="btn btn-primary add-btn" style="float: right; margin-right: 50px;margin-top: -50px;padding: 6px 12px; margin-top: 20px;">
+        Add an expense</button>
+
+  <div id="results" class="results">
+      {% set total_buyings=0%}
+      {% set total_sellings=0%}
+      {% set total_reservations=0%}
+      {% set total_expenses=0%}
+      {% for b in buying %}
+          {% set total_buyings=total_buyings+b.total %}
+      {% endfor %}
+      {% for b in selling %}
+          {% set total_sellings=total_sellings+b.total %}
+      {% endfor %}
+      {% for r in reservations %}
+          {% set total_reservations=total_reservations+r.price %}
+      {% endfor %}
+      {% for o in other_expenses %}
+          {% set total_expenses=total_expenses+o.total %}
+      {% endfor %}
+        <table class="table">
+
+     <tr class="row header-purple col-md-12">
+          <td class="cell col-md-12" style="text-align: center;">
+               Income statement for Star Hotel
+               <script>document.write(new Date().format('F Y'));</script>
+           </td>
+     </tr>
+
+    <tr  class="row col-md-12">
+        <td  class="cell col-md-6" style="float: left;font-weight: 600;">
+            Revenues
+        </td>
+        <td class="cell col-md-3"></td>
+        <td class="cell col-md-3"></td>
+
+     </tr>
+        {% if total_sellings != 0 %}
+        <tr class="row col-md-12">
+            <td class="cell col-md-6" style="float: left;">
+                Revenues from the restaurant
+            </td>
+            <td class="cell col-md-3" style="float:right;text-align: right;">
+                {{ total_sellings }} ALL
+            </td><td class="col-md-1"></td>
+
+        </tr>
+        {% endif %}
+
+    {% if total_reservations !=0 %}
+        <tr class="row col-md-12">
+            <td class="cell col-md-6" style="float: left;">
+                Revenues from the hotel
+            </td>
+            <td class="cell col-md-3" style="float:right;text-align: right;">
+                {{ total_reservations }} ALL
+            </td><td class="col-md-1"></td>
+        </tr>
+    {% endif %}
+            <tr class="row col-md-12">
+            <td class="cell col-md-6" style="float: left;font-style: italic;">
+            Total Revenues
+        </td>
+        <td class="cell col-md-3" style="float:right;font-style: italic;text-align: right;font-weight: 600;">
+            {% set r_total=total_reservations+total_sellings %}
+            {{ r_total }} ALL
+        </td><td class="col-md-1"></td>
+
+        </tr>
+            <tr class="row col-md-12">
+            <td class="cell col-md-6" style="float: left;font-weight: 600;">
+                Expenses
+            </td><td class="cell col-md-3"></td>
+        </tr>
+
+        {% if total_buyings  != 0 %}
+             <tr class="row col-md-12">
+                <td class="cell col-md-6" style="float: left;">
+                    Purchases
+                </td>
+                <td class="cell col-md-3" style="float:right;">
+                    {{ total_buyings  }} ALL
+                </td>
+            </tr>
+        {% endif %}
+         {% if total_expenses != 0 %}
+
+            {% for ex in other_expenses %}
+                <tr class="row col-md-12">
+                    <td class="cell col-md-6" style="float: left;">
+                     {{ ex.explanation }}
+                    </td>
+                    <td class="cell col-md-3" style="float:right;">
+                        {{ ex.total  }} ALL
+                    </td>
+                </tr>
+            {% endfor %}
+
+        {% endif %}
+            <tr class="row col-md-12">
+                <td class="cell col-md-6" style="float: left;font-style: italic;">
+                    Total Expenses
+                </td>
+                <td class="cell col-md-3" style="float:right;font-style: italic;text-align: right;font-weight: 600;">
+                    {% set e_total=total_buyings+total_expenses %}
+                    {{ e_total }} ALL
+                </td><td class="col-md-1"></td>
+
+            </tr>
+            {% set income=r_total-e_total %}
+            {% if income > 0 %}
+            <tr class="row col-md-12">
+                <td class="cell col-md-6" style="float: left;font-style: italic;right;font-weight: 600;">
+                    Net Income
+                </td>
+                <td class="cell col-md-3" style="float:right;font-style: italic;text-align: right;font-weight: 600;">
+
+                    {{ income }} ALL
+                </td><td class="col-md-1"></td>
+
+            </tr>
+            {%else%}
+                <tr class="row col-md-12">
+                    <td class="cell col-md-6" style="float: left;font-style: italic;right;font-weight: 600;">
+                        Net Loss
+                    </td>
+                    <td class="cell col-md-3" style="float:right;font-style: italic;text-align: right;font-weight: 600;">
+
+                        {{ income }} ALL
+                    </td><td class="col-md-1"></td>
+
+                </tr>
+            {%endif%}
+        </table>
+</div>
+<div id="res" class="results2">
+</div>
+    <script>
+
+        $("#add-expense").on("click", function(event) {
+
+            var date=new Date().format('d-m-Y');
+            bootbox.confirm("<form id='infos' action=''>\
+                <label>Expense:</label><input type='text' id='expense' name='expense' /><br/>\
+                <label>Value:</label><input type='number' id='value_e' name='value_e' /><br/>\
+             </form>", function(result) {
+                if(result) {
+                    var check="";
+                    var expense=$('#expense').val();
+                    if(expense=="")
+                        check+="Expense";
+                    var value_e=$('#value_e').val();
+                    if(value_e=="")
+                        check+=" - "+"Value";
+
+                    if(check!=""){
+                        bootbox.alert("Please fullfill all the information required. Missing :"+check);
+
+                    }else {
+
+                        var user='{{ app.user.username  }}';
+                        $.ajax({
+                            url: "{{ path('add_expense') }}",
+                            type: 'POST',
+                            data: {'expense': expense,'user': user,
+                                'date': date,'value_e': value_e },
+                            dataType: 'json',
+                            success: function (response) {
+                                location.reload();
+                            }
+
+                        });
+                    }
+                }
+            });
+        });
+
+       function searchByMonth(){
+            var month=$("#month").val();
+            var year=$("#year").val();
+            $('#results').hide();
+            console.log(month+" --> "+year);
+                $.ajax({
+                    url: "{{ path('search_for_finance') }}",
+                    type: 'POST',
+                    data: {'month': month,
+                        'year': year
+                    },
+                    dataType: 'json',
+                    success: function(data){ alert("here");
+//                      $("res").html(data);
+                    }
+                });
+        }
+
+
+    </script>
+{% endblock %}

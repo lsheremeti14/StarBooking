@@ -1,0 +1,488 @@
+{% extends 'HotelBundle:Default:base.html.twig' %}
+{% block content %}
+<style>
+
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    caption, th, td {
+        text-align: left;
+        font-weight: normal;
+        vertical-align: middle;
+    }
+
+    q, blockquote {
+        quotes: none;
+    }
+    q:before, q:after, blockquote:before, blockquote:after {
+        content: "";
+        content: none;
+    }
+
+    a img {
+        border: none;
+    }
+
+    article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+        display: block;
+    }
+
+    /* Colors */
+    /* ---------------------------------------- */
+    * {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    body {
+        text-align: center;
+        font-family: 'Lato', 'sans-serif';
+        font-weight: 400;
+    }
+
+
+    #info_bill {
+        padding: 4em 10%;
+    }
+
+    #info_bill {
+        background-color: #077ABC;
+        color: white;
+        height: 160px;
+        z-index: 10;
+    }
+    #info_bill h1 {
+        font-weight: 400;
+        text-transform: uppercase;
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+    #info_bill h1 i {
+        color: #055a8b;
+    }
+    #info_bill h1 span {
+        font-weight: 300;
+    }
+    #info_bill p {
+        font-weight: 400;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.9);
+        letter-spacing: .05em;
+        margin-bottom: 10px;
+    }
+    #info_bill h3,
+    #info_bill h3 a {
+        color: #32CCFE;
+        position: absolute;
+        float:left;
+        margin-left: 60px;
+        margin-top: 60px;
+    }
+    #info_bill h3 a,
+    #info_bill h3 a a {
+        -moz-transition: color 0.3s;
+        -o-transition: color 0.3s;
+        -webkit-transition: color 0.3s;
+        transition: color 0.3s;
+    }
+    #info_bill h3 a:hover,
+    #info_bill h3 a a:hover {
+        color: white;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    h2.heading {
+        font-size: 18px;
+        text-transform: uppercase;
+        font-weight: 300;
+        text-align: left;
+        color: #506982;
+        border-bottom: 1px solid #506982;
+        padding-bottom: 3px;
+        margin-bottom: 20px;
+    }
+
+    .controls {
+        margin-top: 30px;
+        text-align: left;
+        position: relative;
+    }
+    .controls input[type="text"],
+    .controls input[type="number"],
+    .controls textarea,
+    .controls button,
+    .controls select {
+        padding: 12px;
+        font-size: 14px;
+        border: 1px solid #c6c6c6;
+        width: 100%;
+        margin-bottom: 18px;
+        color: #888;
+        font-family: 'Lato', 'sans-serif';
+        font-size: 16px;
+        font-weight: 300;
+        background-color: #fff;
+        -moz-border-radius: 2px;
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        -moz-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+    .controls input[type="text"]:focus, .controls input[type="text"]:hover,
+    .controls input[type="number"]:focus,
+    .controls input[type="number"]:hover,
+    .controls textarea:focus,
+    .controls textarea:hover,
+    .controls button:focus,
+    .controls button:hover,
+    .controls select:focus,
+    .controls select:hover {
+        outline: none;
+        border-color: #9FB1C1;
+    }
+    .controls input[type="text"]:focus + label, .controls input[type="text"]:hover + label,
+    .controls input[type="number"]:focus + label,
+    .controls input[type="number"]:hover + label,
+    .controls textarea:focus + label,
+    .controls textarea:hover + label,
+    .controls button:focus + label,
+    .controls button:hover + label,
+    .controls select:focus + label,
+    .controls select:hover + label {
+        color: #077ABC;
+        cursor: text;
+    }
+    .controls .fa-sort {
+        position: absolute;
+        right: 10px;
+        top: 17px;
+        color: #999;
+    }
+    .controls select {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+    }
+    .controls label {
+        position: absolute;
+        left: 8px;
+        top: 12px;
+        color: #999;
+        font-size: 16px;
+        display: inline-block;
+        padding: 4px 10px;
+        font-weight: 400;
+        background-color: rgba(255, 255, 255, 0);
+        pointer-events: none;
+        -moz-transition: color 0.3s, top 0.3s, background-color 0.8s;
+        -o-transition: color 0.3s, top 0.3s, background-color 0.8s;
+        -webkit-transition: color 0.3s, top 0.3s, background-color 0.8s;
+        transition: color 0.3s, top 0.3s, background-color 0.8s;
+    }
+    .controls label.active {
+        top: -13px;
+        color: #555;
+        background-color: white;
+    }
+    .controls textarea {
+        resize: none;
+        height: 200px;
+    }
+    .controls button {
+        cursor: pointer;
+        background-color: #077ABC;
+        border: none;
+        color: #fff;
+        padding: 12px 0;
+    }
+    .controls button:hover {
+        background-color: #0e5a86;
+    }
+
+    .add_buy{
+        padding: 40px;
+        position: absolute;
+        top: 200px;
+        padding-top: 30px;
+        height: 80vh;
+        background-color: #d7e5ea;
+        width: 25%;
+        margin-left: 50px;
+    }
+
+    .list_products{
+        width: 60%;
+        float: right;
+        margin-right: 80px;
+
+    }
+
+    /*
+
+RESPONSTABLE 2.0 by jordyvanraaij
+  Designed mobile first!
+
+If you like this solution, you might also want to check out the 1.0 version:
+  https://gist.github.com/jordyvanraaij/9069194
+
+*/
+    .responstable {
+        margin: 1em 0;
+        width: 100%;
+        overflow: hidden;
+        background: #FFF;
+        color: #0e5a86;
+        border-radius: 10px;
+        border: 1px solid #077ABC;
+    }
+    .responstable tr {
+        border: 1px solid #D9E4E6;
+    }
+    .responstable tr:nth-child(odd) {
+        background-color: #EAF3F3;
+    }
+    .responstable th {
+        display: none;
+        border: 1px solid #FFF;
+        background-color: #0e5a86;
+        color: #FFF;
+        padding: 1em;
+    }
+    .responstable th:first-child {
+        display: table-cell;
+        text-align: center;
+    }
+    .responstable th:nth-child(2) {
+        display: table-cell;
+    }
+    .responstable th:nth-child(2) span {
+        display: none;
+    }
+    .responstable th:nth-child(2):after {
+        content: attr(data-th);
+    }
+    @media (min-width: 480px) {
+        .responstable th:nth-child(2) span {
+            display: block;
+        }
+        .responstable th:nth-child(2):after {
+            display: none;
+        }
+    }
+    .responstable td {
+        display: block;
+        word-wrap: break-word;
+        max-width: 7em;
+    }
+    .responstable td:first-child {
+        display: table-cell;
+        text-align: center;
+        border-right: 1px solid #D9E4E6;
+    }
+    @media (min-width: 480px) {
+        .responstable td {
+            border: 1px solid #D9E4E6;
+        }
+    }
+    .responstable th, .responstable td {
+        text-align: left;
+        margin: .5em 1em;
+    }
+    @media (min-width: 480px) {
+        .responstable th, .responstable td {
+            display: table-cell;
+            padding: 1em;
+        }
+    }
+    .save_bill {
+        cursor: pointer;
+        background-color: #077ABC;
+        border: none;
+        color: #fff;
+        padding: 6px 12px;
+    }
+    .save_bill:hover {
+        background-color: #0e5a86;
+    }
+
+</style>
+
+    <script> var rows=0;
+            var bill_total=0.0;</script>
+    <html style="height: 100%;">
+    <div id="info_bill">
+        <h1 style="float: left;"> <img style="width: 40px; height: 40px;" src="{{ asset('uploads/star.png') }}"> <span>Star Hotel</span> </h1>
+        <p><h3>Follow us <i class="fa fa-twitter"></i>  @starhotel</h3></p>
+        <p style="float: right; font-size: 25px; margin-top: 25px;">
+            <script> document.write(new Date().toDateString()); </script>
+        </p>
+    </div>
+    <div class="add_buy">
+
+        <!--  Details -->
+        <div class="form-group">
+            <h2 class="heading">Details</h2>
+
+            <div class="controls">
+                <i class="fa fa-sort"></i>
+                <select class="floatLabel" id="product">
+                    <option value="blank"></option>
+                    {% for p in products %}
+                    <option value="{{ p.id }}-*-{{ p.selling }}">{{ p.name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="product">Product</label>
+            </div>
+            <div class="controls">
+                <input type="number" id="quantity" class="floatLabel" name="quantity">
+                <label for="quantity">Quantity</label>
+                <button onclick="addProduct()">Add</button>
+
+            </div>
+        </div>
+
+    </div>
+
+<div id="list_products" class="list_products">
+    <table class="responstable" id="products">
+
+        <tr>
+            <th>Nr.</th>
+            <th><span>Product</span></th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+
+    </table>
+    <hr>
+
+    <p id="bill" style="float: right; margin-right: 30px;">Total :
+    <label><span  style="font-weight: 900; font-size: 20px;" id="bill_total">0.00 ALL</span></label>
+    </p>
+    <button class="save_bill" onclick="saveBill()">Save Bill</button>
+</div>
+        <script>
+
+            function addProduct(){
+
+                var p=$("#product").val();
+                var pp=p.split("-*-");
+                var product=pp[0];
+                var price=pp[1];
+                var quant=$("#quantity").val();
+                var prod_name=$("#product :selected").text();
+
+                $('input[type="text"]').val("")
+                $('input[type="number"]').val("");
+                $('select').val(0);
+
+                var table=$(document.getElementById("products"));
+                var row = document.createElement('tr');
+                row.id=product;
+                row.className="added";
+                var cell1=row.insertCell(0);
+                rows=rows+1;
+                var delete_row="<i class='fa fa-times' aria-hidden='true' style='margin-right: 5px;' onclick='deleteDiv("+rows+","+price+","+quant+")'></i>";
+                cell1.innerHTML=delete_row+rows;
+
+                var cell2=row.insertCell(1);
+
+                cell2.innerHTML=prod_name;
+
+                var cell3=row.insertCell(2);
+                cell3.innerHTML=quant;
+
+                var cell4=row.insertCell(3);
+                cell4.innerHTML=price;
+                var total=quant*price;
+
+                var cell5=row.insertCell(4);
+                cell5.innerHTML=total;
+
+                table.append(row);
+
+                bill_total=bill_total+total;
+                document.getElementById("bill_total").innerHTML=bill_total+" ALL";
+            }
+
+
+            function deleteDiv(div,price,quant){
+                var tr_to_change= $("#products tr:eq("+div+")");
+                tr_to_change.remove();
+                rows=rows-1;
+
+                for(var i=div; i<=rows; i++){
+                    var delete_row="<i class='fa fa-times' aria-hidden='true' style='margin-right: 5px;' onclick='deleteDiv("+i+")'></i>";
+                    $("#products tr:eq("+i+")").children(0)[0].innerHTML=delete_row+i;
+
+                }
+                var total=price*quant;
+                bill_total=bill_total-total;
+                document.getElementById("bill_total").innerHTML=bill_total+" ALL";
+            }
+        function saveBill(){
+            var prod_id=[];
+            var quantity=[];
+            var prices=[];
+            var date=new Date().toLocaleString();
+            var user='{{ app.user.username  }}';
+
+        var prod= document.getElementsByClassName('added');
+            for(var i=0;i<prod.length; i++){
+                prod_id.push(prod[i].id);
+                var cells=prod[i].cells;
+                quantity.push(cells[2].innerHTML);
+                prices.push(cells[3].innerHTML);
+            }
+
+
+            $.ajax({
+                url: "{{ path('add_selling_bill') }}",
+                type: 'POST',
+                data: {'date': date,
+                    'user': user,
+                    'total': bill_total,
+                    'products': prod_id,
+                    'quantity': quantity,
+                    'prices': prices },
+                dataType: 'json',
+                success: function (response) {
+                    location.reload();
+                }
+
+            });
+
+        }
+
+        (function($){
+            function floatLabel(inputType){
+                $(inputType).each(function(){
+                    var $this = $(this);
+                    // on focus add cladd active to label
+                    $this.focus(function(){
+                        $this.next().addClass("active");
+                    });
+                    //on blur check field and remove class if needed
+                    $this.blur(function(){
+                        if($this.val() === '' || $this.val() === 'blank'){
+                            $this.next().removeClass();
+                        }
+                    });
+                });
+            }
+            // just add a class of "floatLabel to the input field!"
+            floatLabel(".floatLabel");
+        })(jQuery);
+
+    </script>
+{% endblock %}

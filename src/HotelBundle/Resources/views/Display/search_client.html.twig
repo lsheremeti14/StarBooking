@@ -1,0 +1,237 @@
+<html>
+
+
+{#   The design of this page is insired by https://codepen.io/afirulaf/pen/djAen   #}
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+<style>
+    /*
+https://codepen.io/overdrivemachines/pen/zrYvBo
+*/
+
+    .res-list {
+        /* max-width: 800px; */
+        margin: 2em;
+    }
+
+    .res-list thead tr th {
+        padding-bottom: 1em;
+    }
+
+    .res-item {
+
+        /* display: flex; */
+        border-bottom: 1px solid #ccc;
+        transition: .5s;
+    }
+
+    .res-item>td {
+        padding-top: 16px;
+        padding-bottom: 16px;
+        vertical-align: middle;
+    }
+
+    .res-item:hover {
+        background: #efefef;
+        /* transition:.5s; */
+    }
+
+    .res-item:last-child {
+        border-bottom: none;
+    }
+
+    .room-number {
+        font-size: 2.85em;
+        font-weight: 700;
+        width: 160px;
+        text-align: right;
+        border-right: 1px solid #ccc;
+        padding-right: 16px;
+    }
+
+    .res-details-c {
+        padding-left: 16px;
+        padding-right: 16px;
+        max-width: 520px;
+    }
+
+    .names {
+        font-weight: 700;
+        line-height: 1.3;
+        padding-bottom: 0.33em;
+        font-size: 1.1em;
+        margin-top: 4px;
+    }
+
+    .res-details {
+        padding-bottom: 0.61em;
+    }
+
+    .res-details>div {
+        font-size: 0.85em;
+        display: inline-block;
+        padding-right: 1em;
+        width: 190px;
+        line-height: 1.3;
+    }
+
+    .res-details>div.res-nights {
+        width: 90px;
+    }
+
+    .res-badges {}
+
+    .res-badges .badge {
+        margin-right: 1em;
+    }
+
+    .res-actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .res-actions a {
+        /* border: 1px solid green; */
+        padding: 1em;
+    }
+    ::-webkit-scrollbar {
+        width: 5px;
+        min-height: 4px;
+    }
+    ::-webkit-scrollbar-track-piece {
+        background:  #D8D8D8;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #7C828B;
+    }
+    .btn-red{
+        background-color: red;
+    }
+    .btn-green{
+        background-color: green;
+    }
+    .head
+    {
+        font-size: 24px;
+        color: #32CCFE;
+        margin-left: 10px;
+        font-weight: 900;
+    }
+    .input_label {
+        width:150px;
+        display: inline-block;
+        text-align: left;
+    }
+    #infos{
+        text-align: left;
+    }
+    .head
+    {
+        font-size: 24px;
+        color: #32CCFE;
+        margin-left: 10px;
+        font-weight: 900;
+    }
+</style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+<script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
+
+<script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+
+<section id="force-full-height">
+    {% if clients|length ==0 %}
+             <p class="head">  There are no Reservations found!</p>
+    {% else %}
+    <table class="res-list">
+        <thead>
+        <tr>
+            <th class="head">Room #</th>
+            <th class="head">Details</th>
+            <th class="head">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set e=0 %}
+
+        {% for c in clients %}
+            <tr class="res-item">
+                <td class="room-number">{{ c.getRoom().getCode() }}</td>
+                <td class="res-details-c">
+                    <div class="names">
+                        {{ c.name }} {{ c.surname }}
+                    </div>
+                    <div class="res-details">
+                        <div class="res-arrival">Arriving: {{ c.startingDate|date('F d, Y') }}</div>
+                        <div class="res-leaving">Leaving: {{ c.endingDate|date('F d, Y') }}</div>
+                        {% set difference = date(c.endingDate|date('Y/m/d')).diff(date(c.startingDate|date('Y/m/d'))) %}
+                        {% set leftDays = difference.days %}
+                        <div class="res-nights">{{ leftDays }} Nights</div>
+                    </div>
+                    <div class="res-badges">
+                        {% if c.paid==0 %}
+                            <span id="paid-{{ c.id }}" class="badge btn-red">Unpaid {{ c.price }} ALL</span>
+                        {% else %}
+                            <span class="badge btn-green">Paid {{ c.price }} ALL</span>
+                        {% endif %}
+                    </div>
+                </td>
+                <td>
+                    <div class="res-actions">
+                        {% if c.paid==0 %}
+                            <span style="color: green; cursor: pointer" onclick="confirmPayment({{ c.id }},{{ c.price }})">Confirm Payment <i class="fa fa-check" style="color: green;" aria-hidden="true"></i> </span>
+                        {% else %}
+                            <span></span>
+                        {% endif %}
+                    </div>
+
+                </td>
+            </tr>
+         {% endfor %}
+
+        </tbody>
+    </table>
+    {% endif %}
+
+</section>
+
+<script>
+
+    function confirmPayment(id,price){
+        bootbox.confirm({
+            message: "Do you confirm the payment?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if(result == true){
+                    $.ajax({
+                        url: "{{ path('confirm_payment') }}",
+                        type: 'GET',
+                        data: {'id': id },
+                        success: function (response) {
+                            $("#paid-"+id).removeClass("btn-red");
+                            $("#paid-"+id).addClass("btn-green");
+                            $("#paid-"+id).html(price+" ALL");
+
+                        }
+
+                    });
+                }
+            }
+        });
+
+    }
+
+
+</script>
+</html>

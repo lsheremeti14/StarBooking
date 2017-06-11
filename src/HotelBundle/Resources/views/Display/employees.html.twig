@@ -1,0 +1,319 @@
+{% extends 'HotelBundle:Default:base.html.twig' %}
+{% block content %}
+    <style>
+        .add-btn{
+            position: absolute;
+            top: 80px;
+            float: right;
+            margin-right: 30px;
+            padding: 6px 12px;
+        }
+        label {
+            width:150px;
+            display: inline-block;
+        }
+
+    </style>
+
+
+<div class="mainArea">
+
+    <button id="add-employee" class="btn btn-primary add-btn"><i class="fa fa-user-plus" aria-hidden="true"></i>
+        Employee</button>
+    <div class="table-red">
+
+        <div class="row header-red">
+
+        {% if employees|length!=0 %}
+            <div class="cell">
+                Name
+            </div>
+            <div class="cell">
+                Position
+            </div>
+            <div class="cell">
+                Salary
+            </div>
+            <div class="cell">
+                Phone
+            </div>
+            <div class="cell">
+                Actions
+            </div>
+        </div>
+
+
+        {% for e in employees %}
+        <div class="row">
+            <div class="cell">
+                {{ e.name }} {{ e.surname }}
+            </div>
+            <div class="cell">
+                {{ e.position }}
+            </div>
+            <div class="cell">
+                {{ e.salary }}
+            </div>
+            <div class="cell">
+                {{ e.cel }}
+            </div>
+            <div class="cell">
+                <i class="fa fa-pencil-square-o fa-2 add-yellow add-movement" aria-hidden="true"
+                   onclick="editEmployee({{ e.id }}, '{{ e.name }}', '{{ e.surname }}','{{ e.position }}','{{ e.salary }}','{{ e.cel }}','{{ e.address }}','{{ e.startingDate|date('d-m-Y') }}')"></i>
+                <i class="fa fa-trash fa-3 add-red add-movement" style="margin-left: 10px;" aria-hidden="true" onclick="deleteEmployee({{ e.id }}, {{ e.user }})"></i>
+                {% if e.system==0 %}
+                    <i class="ion-person add-green add-movement" style="margin-left: 10px;" aria-hidden="true" onclick="addUser({{ e.id }})"></i>
+                {% else %}
+                    <i class="ion-android-cancel add-red add-movement" style="margin-left: 10px;" aria-hidden="true" onclick="deleteUser({{ e.user }}, {{ e.id }})"></i>
+                {% endif %}
+
+            </div>
+        </div>
+        {% endfor %}
+
+    {% else %}
+       No employees registered
+    </div>
+    {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <form action="" id="add-template" class="form form-content" style="display:none">
+
+            <input type='text' id="emri" placeholder="Name">
+            <input type='text' id="test" placeholder="Surname">
+
+    </form>
+    <script>
+
+        function addUser(id) {
+
+            var date = new Date().format('d-m-Y');
+            bootbox.confirm("<form id='infos' action=''>\
+                <label>Username:</label><input type='text' id='username' name='username' /><br/>\
+                <label>Email:</label><input type='email' id='email' name='email' /><br/>\
+                <label>Password:</label><input type='password' id='password' name='password' /><br/>\
+                <label>Role:</label><select id='role' name='role'>\
+                <option value='ROLE_MANAGER'>Manager</option>\
+                <option value='ROLE_RECEPTIONIST'>Receptionist</option>\
+                <option value='ROLE_WAITER'>Waiter</option>\
+                <option value='ROLE_FINANCER'>Financer</option>\
+                </form>", function (result) {
+                if (result) {
+                    var check = "";
+                    var username = $('#username').val();
+                    if (username == "")
+                        check += "Username";
+                    var email = $('#email').val();
+                    if (email == "")
+                        check += " - " + "Email";
+                    var password = $('#password').val();
+                    if (password == "")
+                        check += " - " + "Password";
+                    var role = document.getElementById('role').value;
+                    if (check != "") {
+                        bootbox.alert("Please fullfill all the information required. Missing :" + check);
+
+                    } else {
+                        $.ajax({
+                            url: "{{ path('add_user_system') }}",
+                            type: 'POST',
+                            data: {
+                                'id': id,
+                                'username': username,
+                                'email': email,
+                                'password': password,
+                                'role': role
+                            },
+                            dataType: 'json',
+                            success: function (response) {
+                                location.reload();
+                            }
+                        });
+
+                    }
+                }
+            });
+        }
+
+        $("#add-employee").on("click", function(event) {
+
+            var date=new Date().format('d-m-Y');
+            bootbox.confirm("<form id='infos' action=''>\
+                <label>First name:</label><input type='text' id='e_name' name='first_name' /><br/>\
+                <label>Last name:</label><input type='text' id='e_surname' name='last_name' /><br/>\
+                <label>Position:</label><input type='text' id='e_position' name='position' /><br/>\
+                <label>Address:</label><input type='text' id='e_address' name='address' /><br/>\
+                <label>Cel Nr.:</label><input type='text' id='e_cel' name='cel' /><br/>\
+                <label>Salary:</label><input type='text' id='e_salary' name='salary' /><br/>\
+                <label>Starting Date:</label><input type='date' placeholder="+date+" id='e_date' name='starting_date' /><br/>\
+             </form>", function(result) {
+                if(result) {
+                    var check="";
+                    var name=$('#e_name').val();
+                    if(name=="")
+                        check+="Name";
+                    var surname=$('#e_surname').val();
+                    if(surname=="")
+                        check+=" - "+"Surname";
+                    var position=$('#e_position').val();
+                    if(position=="")
+                        check+=" - "+"Position";
+                    var address=$('#e_address').val();
+                    if(address=="")
+                        check+=" - "+"Address";
+                    var cel=$('#e_cel').val();
+                    if(cel=="")
+                        check+=" - "+"Cel Nr.";
+                    var salary=$('#e_salary').val();
+                    if(salary=="")
+                        check+=" - "+"Salary";
+                    var starting=$('#e_date').val();
+                    if(starting=="")
+                        check+=" - "+"Starting date";
+                    if(check!=""){
+                        bootbox.alert("Please fullfill all the information required. Missing :"+check);
+
+                    }else {
+                        $.ajax({
+                            url: "{{ path('add_employee') }}",
+                            type: 'POST',
+                            data: {'e_name': name,
+                                    'e_surname': surname,
+                                    'e_position': position,
+                                    'e_cel': cel,
+                                    'e_address': address,
+                                    'e_salary': salary,
+                                    'e_date': starting },
+                            dataType: 'json',
+                            success: function (response) {
+                                location.reload();
+                            }
+
+                        });
+                    }
+                }
+                });
+        });
+
+        function editEmployee(id, name, surname, position, salary, cel, address, starting){
+            var date=new Date().format('d-m-Y');
+            bootbox.confirm("<form id='infos' action=''>\
+                <label>First name:</label><input type='text' id='e_name' value='"+name+"' name='first_name' /><br/>\
+                <label>Last name:</label><input type='text' id='e_surname' value='"+surname+"' name='last_name' /><br/>\
+                <label>Position:</label><input type='text' id='e_position' value='"+position+"' name='position' /><br/>\
+                <label>Address:</label><input type='text' id='e_address' value='"+address+"' name='address' /><br/>\
+                <label>Cel Nr.:</label><input type='text' id='e_cel' value='"+cel+"' name='cel' /><br/>\
+                <label>Salary:</label><input type='text' id='e_salary' value='"+salary+"' name='salary' /><br/>\
+             </form>", function(result) {
+                if(result) {
+                    var check="";
+                    var name=$('#e_name').val();
+                    if(name=="")
+                        check+="Name";
+                    var surname=$('#e_surname').val();
+                    if(surname=="")
+                        check+=" - "+"Surname";
+                    var position=$('#e_position').val();
+                    if(position=="")
+                        check+=" - "+"Position";
+                    var address=$('#e_address').val();
+                    if(address=="")
+                        check+=" - "+"Address";
+                    var cel=$('#e_cel').val();
+                    if(cel=="")
+                        check+=" - "+"Cel Nr.";
+                    var salary=$('#e_salary').val();
+                    if(salary=="")
+                        check+=" - "+"Salary";
+                    if(check!=""){
+                        bootbox.alert("Please fullfill all the information required. Missing :"+check);
+
+                    }else {
+                        $.ajax({
+                            url: "{{ path('update_employee') }}",
+                            type: 'POST',
+                            data: {'e_id':id,
+                                'e_name': name,
+                                'e_surname': surname,
+                                'e_position': position,
+                                'e_cel': cel,
+                                'e_address': address,
+                                'e_salary': salary,
+                                'e_date': starting },
+                            dataType: 'json',
+                            success: function (response) {
+                                location.reload();
+                            }
+
+                        });
+                    }
+                }
+            });
+        }
+
+        function deleteEmployee(id,user){
+            bootbox.confirm({
+                message: "Are you sure you want to delete this employee?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $.ajax({
+                            url: "{{ path('delete_employee') }}",
+                            type: 'GET',
+                            data: {'id': id, 'user': user},
+                            dataType: 'json',
+                            success: function (response) {
+                                location.reload();
+                            }
+
+                        });
+                    }
+                }
+            });
+        }
+
+        function deleteUser(id, employee){
+            bootbox.confirm({
+                message: "Are you sure you want to delete this user?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result == true) {
+                        $.ajax({
+                            url: "{{ path('delete_user') }}",
+                            type: 'GET',
+                            data: {'id': id, 'employee': employee},
+                            dataType: 'json',
+                            success: function (response) {
+                                location.reload();
+                            }
+
+                        });
+                    }
+                }
+            });
+
+        }
+    </script>
+
+{% endblock %}

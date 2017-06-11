@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="{{ asset('uploads/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('uploads/images/favicon.ico') }}" type="image/x-icon">
+    {#<link rel="shortcut icon" href="http://tibo.tv/wp-content/uploads/2015/10/xfavicon.png.pagespeed.ic.lhNMSVkIx8.webp">#}
+    <title>Star Hotel</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="{{ asset('assets/css/design.css') }}">
+
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+
+    <!--    <script src="../assets/js/pace.js"></script>-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <![endif]-->
+
+    <script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ asset('assets') }}/bootstrap/js/bootstrap.min.js"></script>
+    {#<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>#}
+    {#<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>#}
+    <script src="{{ asset('assets/js/bootbox.min.js') }}"></script>
+    <script src="{{ asset('assets/js/knockout-3.2.0.js') }}"></script>
+    <script src="{{ asset('assets/js/Date.format.min.js') }}"></script>
+
+
+    {% block stylesheet %}
+    {% endblock %}
+    <style>
+        body{
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+        .btn-file{
+            margin-left: 40px;
+        }
+    </style>
+    <style>
+        /* Resizable
+----------------------------------*/
+        .ui-resizable { position: relative;}
+        .ui-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99999; display: block;}
+        .ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
+        .ui-resizable-n { cursor: n-resize; height: 7px; width: 100%; top: -5px; left: 0px; }
+        .ui-resizable-s { cursor: s-resize; height: 7px; width: 100%; bottom: -5px; left: 0px; }
+        .ui-resizable-e { cursor: e-resize; width: 7px; right: -5px; top: 0px; height: 100%; }
+        .ui-resizable-w { cursor: w-resize; width: 7px; left: -5px; top: 0px; height: 100%; }
+        .ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
+        .ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
+        .ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
+        .ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}
+    </style>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <style>
+        .ui-icon,
+        .ui-widget-content .ui-icon {
+            background-image: url("http://strd6.com/stuff/jqui/theme/images/ui-icons_ffffff_256x240.png");
+        }
+    </style>
+</head>
+
+<body class="hold-transition skin-blue sidebar-mini">
+
+{#<!-- Site wrapper -->#}
+<div class="header">
+    {% include 'HotelBundle:Default:header.html.twig' %}
+</div>
+
+{% block content %}
+
+{% endblock %}
+
+
+{% block javascripts %}
+
+{% endblock %}
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+</body>
+</html>

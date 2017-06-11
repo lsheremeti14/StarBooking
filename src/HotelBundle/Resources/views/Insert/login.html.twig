@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.5 -->
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="shortcut icon" href="{{ asset('uploads/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('uploads/images/favicon.ico') }}" type="image/x-icon">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        body{
+            font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+        }
+        .option-buttons{
+            width: 100px;
+            border: 0 solid transparent;
+            padding: 5px;
+            margin: 5px;
+            border-radius: 3px;
+        }
+        .forget-password span:hover{
+            color: white !important;
+        }
+
+        .login-fieldset{
+            position: relative;
+            width: 400px;
+            padding: 20px;
+            padding-bottom: 30px;
+            -moz-box-shadow: 0 0 20px black;
+            -webkit-box-shadow: 0 0 20px black;
+            background: #fff;
+            box-shadow: 0 5px 11px 3px rgba(0, 0, 0,0.3);
+            /*background-color: #0D191C !important;*/
+            /*color: #E4AF23;*/
+        }
+
+        #login-form{
+            min-height: 240px;
+            width: 85%;
+            margin-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        .form-control{
+            border-radius: 2px;
+        }
+
+        label{
+            margin-top: 5px;
+        }
+
+        #login-click{
+            float: right;
+            cursor: pointer;
+            padding:10px 20px 10px 20px;
+            margin:0;
+            color: white;
+            font-size: 14px;
+        }
+        .yellow-bg {
+            background-color: #E4AF23 !important;
+            outline: none !important;
+        }
+
+        .yellow-bg:hover, .yellow-bg:active, .yellow-bg:focus{
+            color: white;
+            outline: none !important;
+        }
+
+        .forget-password span:hover {
+            color: #E4AF23 !important;
+        }
+    </style>
+</head>
+<body class="hold-transition login-page" style="background: #f9f9f9">
+
+<div class="span12">
+    <div class="span4 login-box" style="margin-top: 9%;width:400px">
+        <header class="panel-heading text-center" style="font-size:3em;background: #121212;">
+            <span style="font-size: 2em; color: #fff;"><img src="{{ asset('assets/storage/images/manager.png') }}"/></span>
+        </header>
+        <fieldset class="span12 offset12 login-fieldset">
+            <form id="login-form" action="{{ path('login_check') }}" method="post">
+                <label>
+                        <span>
+                        {{ 'Username'|trans|raw }}
+                        </span>
+                </label>
+                <div class="input-control text">
+                    <input type="text" class="form-control" id="username" name="_username" value="" placeholder="{{ 'Username'|trans|raw }}">
+                </div>
+                <label>
+                        <span>
+                        {{ 'Password'|trans|raw }}
+                        </span>
+                </label>
+                <div class="input-control password">
+                    <input type="password" id="password" name="_password" placeholder="{{ 'Password'|trans|raw }}" class="form-control">
+                </div>
+
+
+                <button id="login-click" type="submit" name="submit" class="btn pull-right yellow-bg">{{ 'Sign In'|trans|raw }}</button>
+
+            </form>
+
+        </fieldset>
+    </div><!-- /.login-box -->
+</div>
+
+
+<!-- jQuery 2.1.4 -->
+<script src="{{ asset('assets/js/jQuery-2.1.4.min.js') }}"></script>
+<!-- Bootstrap 3.3.5 -->
+<script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
+
+
+
+</body>
+</html>

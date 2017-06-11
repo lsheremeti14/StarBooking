@@ -1,0 +1,690 @@
+{% extends 'HotelBundle:Default:base.html.twig' %}
+{% block content %}
+    {#The design of this page was taken from: #}
+    {#    ----https://codepen.io/cameronbaney/pen/EazjJ #}
+    {#    ----https://codepen.io/supah/pen/XdKMJK  #}
+    {#    ----https://codepen.io/overdrivemachines/pen/zrYvBo  #}
+    <style>
+
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        caption, th, td {
+            text-align: left;
+            font-weight: normal;
+            vertical-align: middle;
+        }
+
+        q, blockquote {
+            quotes: none;
+        }
+        q:before, q:after, blockquote:before, blockquote:after {
+            content: "";
+            content: none;
+        }
+
+        a img {
+            border: none;
+        }
+
+        article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+            display: block;
+        }
+
+        /* Colors */
+        /* ---------------------------------------- */
+        * {
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        body {
+            text-align: center;
+            font-family: 'Lato', 'sans-serif';
+            font-weight: 400;
+        }
+
+
+        #info_bill {
+            padding: 4em 10%;
+        }
+
+        #info_bill {
+            background-color: #077ABC;
+            color: white;
+            height: 160px;
+            z-index: 10;
+        }
+        #info_bill h1 {
+            font-weight: 400;
+            text-transform: uppercase;
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+        #info_bill h1 i {
+            color: #055a8b;
+        }
+        #info_bill h1 span {
+            font-weight: 300;
+        }
+        #info_bill p {
+            font-weight: 400;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: .05em;
+            margin-bottom: 10px;
+        }
+        #info_bill h3,
+        #info_bill h3 a {
+            color: #32CCFE;
+            position: absolute;
+            float:left;
+            margin-left: 60px;
+            margin-top: 60px;
+        }
+        #info_bill h3 a,
+        #info_bill h3 a a {
+            -moz-transition: color 0.3s;
+            -o-transition: color 0.3s;
+            -webkit-transition: color 0.3s;
+            transition: color 0.3s;
+        }
+        #info_bill h3 a:hover,
+        #info_bill h3 a a:hover {
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        h2.heading {
+            font-size: 18px;
+            text-transform: uppercase;
+            font-weight: 300;
+            text-align: left;
+            color: #506982;
+            border-bottom: 1px solid #506982;
+            padding-bottom: 3px;
+            margin-bottom: 20px;
+        }
+
+        .controls {
+            margin-top: 30px;
+            text-align: left;
+            position: relative;
+        }
+        .controls input[type="text"],
+        .controls input[type="number"],
+        .controls textarea,
+        .controls button,
+        .controls select {
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #c6c6c6;
+            width: 100%;
+            margin-bottom: 18px;
+            color: #888;
+            font-family: 'Lato', 'sans-serif';
+            font-size: 16px;
+            font-weight: 300;
+            background-color: #fff;
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            -moz-transition: all 0.3s;
+            -o-transition: all 0.3s;
+            -webkit-transition: all 0.3s;
+            transition: all 0.3s;
+        }
+        .controls input[type="text"]:focus, .controls input[type="text"]:hover,
+        .controls input[type="number"]:focus,
+        .controls input[type="number"]:hover,
+        .controls textarea:focus,
+        .controls textarea:hover,
+        .controls button:focus,
+        .controls button:hover,
+        .controls select:focus,
+        .controls select:hover {
+            outline: none;
+            border-color: #9FB1C1;
+        }
+        .controls input[type="text"]:focus + label, .controls input[type="text"]:hover + label,
+        .controls input[type="number"]:focus + label,
+        .controls input[type="number"]:hover + label,
+        .controls textarea:focus + label,
+        .controls textarea:hover + label,
+        .controls button:focus + label,
+        .controls button:hover + label,
+        .controls select:focus + label,
+        .controls select:hover + label {
+            color: #077ABC;
+            cursor: text;
+        }
+        .controls .fa-sort {
+            position: absolute;
+            right: 10px;
+            top: 17px;
+            color: #999;
+        }
+        .controls select {
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        .controls label {
+            position: absolute;
+            left: 8px;
+            top: 12px;
+            color: #999;
+            font-size: 16px;
+            display: inline-block;
+            padding: 4px 10px;
+            font-weight: 400;
+            background-color: rgba(255, 255, 255, 0);
+            pointer-events: none;
+            -moz-transition: color 0.3s, top 0.3s, background-color 0.8s;
+            -o-transition: color 0.3s, top 0.3s, background-color 0.8s;
+            -webkit-transition: color 0.3s, top 0.3s, background-color 0.8s;
+            transition: color 0.3s, top 0.3s, background-color 0.8s;
+        }
+        .controls label.active {
+            top: -13px;
+            color: #555;
+            background-color: white;
+        }
+        .controls textarea {
+            resize: none;
+            height: 200px;
+        }
+        .controls button {
+            cursor: pointer;
+            background-color: #077ABC;
+            border: none;
+            color: #fff;
+            padding: 12px 0;
+        }
+        .controls button:hover {
+            background-color: #0e5a86;
+        }
+
+        .add_buy{
+            padding: 40px;
+            position: absolute;
+            top: 250px;
+            padding-top: 30px;
+            height: 50vh;
+            background-color: #d7e5ea;
+            width: 25%;
+            margin-left: 100px;
+        }
+
+        .list_products{
+            width: 60%;
+            float: right;
+            margin-right: 80px;
+
+        }
+
+        /*
+
+    RESPONSTABLE 2.0 by jordyvanraaij
+      Designed mobile first!
+
+    If you like this solution, you might also want to check out the 1.0 version:
+      https://gist.github.com/jordyvanraaij/9069194
+
+    */
+        .responstable {
+            margin: 1em 0;
+            width: 100%;
+            overflow: hidden;
+            background: #FFF;
+            color: #0e5a86;
+            border-radius: 10px;
+            border: 1px solid #077ABC;
+        }
+        .responstable tr {
+            border: 1px solid #D9E4E6;
+        }
+        .responstable tr:nth-child(odd) {
+            background-color: #EAF3F3;
+        }
+        .responstable th {
+            display: none;
+            border: 1px solid #FFF;
+            background-color: #0e5a86;
+            color: #FFF;
+            padding: 1em;
+        }
+        .responstable th:first-child {
+            display: table-cell;
+            text-align: center;
+        }
+        .responstable th:nth-child(2) {
+            display: table-cell;
+        }
+        .responstable th:nth-child(2) span {
+            display: none;
+        }
+        .responstable th:nth-child(2):after {
+            content: attr(data-th);
+        }
+        @media (min-width: 480px) {
+            .responstable th:nth-child(2) span {
+                display: block;
+            }
+            .responstable th:nth-child(2):after {
+                display: none;
+            }
+        }
+        .responstable td {
+            display: block;
+            word-wrap: break-word;
+            max-width: 7em;
+        }
+        .responstable td:first-child {
+            display: table-cell;
+            text-align: center;
+            border-right: 1px solid #D9E4E6;
+        }
+        @media (min-width: 480px) {
+            .responstable td {
+                border: 1px solid #D9E4E6;
+            }
+        }
+        .responstable th, .responstable td {
+            text-align: left;
+            margin: .5em 1em;
+        }
+        @media (min-width: 480px) {
+            .responstable th, .responstable td {
+                display: table-cell;
+                padding: 1em;
+            }
+        }
+
+        .cf:before,
+        .cf:after {
+            content: "";
+            display: table;
+        }
+
+        .cf:after {
+            clear: both;
+        }
+
+        .searchform {
+            background: #f4f4f4;
+            background: rgba(244, 244, 244, .79);
+            border: 1px solid #d3d3d3;
+            left: 20%;
+            padding: 2px 5px;
+            position: relative;
+            margin: 10px 0 0 -170px;
+            width: 630px;
+            box-shadow: 0 4px 9px rgba(0, 0, 0, .37);
+            -moz-box-shadow: 0 4px 9px rgba(0, 0, 0, .37);
+            -webkit-box-shadow: 0 4px 9px rgba(0, 0, 0, .37);
+            border-radius: 10px;
+            -moz-border-radius: 10px;
+            -webkit-border-radius: 10px
+        }
+
+        .searchform input,
+        .searchform button {
+            float: left
+        }
+
+        .searchform input {
+            background: #fefefe;
+            border: none;
+            font: 12px/12px 'HelveticaNeue', Helvetica, Arial, sans-serif;
+            margin-right: 5px;
+            padding: 10px;
+            width: 200px;
+            box-shadow: 0 0 4px rgba(0, 0, 0, .4) inset, 1px 1px 1px rgba(255, 255, 255, .75);
+            -moz-box-shadow: 0 0 4px rgba(0, 0, 0, .4) inset, 1px 1px 1px rgba(255, 255, 255, .75);
+            -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, .4) inset, 1px 1px 1px rgba(255, 255, 255, .75);
+            border-radius: 9px;
+            -moz-border-radius: 9px;
+            -webkit-border-radius: 9px
+        }
+
+        .searchform input:focus {
+            outline: none;
+            box-shadow: 0 0 4px #0d76be inset;
+            -moz-box-shadow: 0 0 4px #0d76be inset;
+            -webkit-box-shadow: 0 0 4px #0d76be inset;
+        }
+
+        .searchform input::-webkit-input-placeholder {
+            font-style: italic;
+            line-height: 15px
+        }
+
+        .searchform input:-moz-placeholder {
+            font-style: italic;
+            line-height: 15px
+        }
+
+        .searchform button {
+            background: rgb(52, 173, 236);
+            background: -moz-linear-gradient(top, rgba(52, 173, 236, 1) 0%, rgba(38, 145, 220, 1) 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(52, 173, 236, 1)), color-stop(100%, rgba(38, 145, 220, 1)));
+            background: -webkit-linear-gradient(top, rgba(52, 173, 236, 1) 0%, rgba(38, 145, 220, 1) 100%);
+            background: -o-linear-gradient(top, rgba(52, 173, 236, 1) 0%, rgba(38, 145, 220, 1) 100%);
+            background: -ms-linear-gradient(top, rgba(52, 173, 236, 1) 0%, rgba(38, 145, 220, 1) 100%);
+            background: linear-gradient(to bottom, rgba(52, 173, 236, 1) 0%, rgba(38, 145, 220, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#34adec', endColorstr='#2691dc', GradientType=0);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font: 13px/13px 'HelveticaNeue', Helvetica, Arial, sans-serif;
+            padding: 10px;
+            width: 50px;
+            box-shadow: 0 0 2px #2692dd inset;
+            -moz-box-shadow: 0 0 2px #2692dd inset;
+            -webkit-box-shadow: 0 0 2px #2692dd inset;
+            border-radius: 9px;
+            -moz-border-radius: 9px;
+            -webkit-border-radius: 9px;
+        }
+
+        .searchform button:hover {
+            opacity: .9;
+        }
+
+        /*--------------------
+        App
+        --------------------*/
+        .search-form {
+            position: relative;
+            float: left;
+            margin-top: -20px;
+            margin-left: 100px;
+            left: 70%;
+            width: 300px;
+            height: 40px;
+            border-radius: 40px;
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            background: #fff;
+            -webkit-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        .search-form.focus {
+            box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .search-input {
+            position: absolute;
+            top: 10px;
+            left: 38px;
+            font-size: 14px;
+            background: none;
+            color: #5a6674;
+            width: 195px;
+            height: 20px;
+            border: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            outline: none;
+        }
+        .search-input::-webkit-search-cancel-button {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .search-button {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            height: 20px;
+            width: 20px;
+            padding: 0;
+            margin: 0;
+            border: none;
+            background: none;
+            outline: none !important;
+            cursor: pointer;
+        }
+        .search-button svg {
+            width: 20px;
+            height: 20px;
+            fill: #5a6674;
+        }
+
+        .search-option {
+            position: absolute;
+            text-align: right;
+            top: 10px;
+            right: 15px;
+        }
+        .search-option div {
+            position: relative;
+            display: inline-block;
+            margin: 0 1px;
+            cursor: pointer;
+        }
+        .search-option div input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.01;
+            cursor: pointer;
+        }
+        .search-option div span {
+            position: absolute;
+            display: block;
+            text-align: center;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+            opacity: 0;
+            background: #929AA3;
+            color: #fff;
+            font-size: 9px;
+            letter-spacing: 1px;
+            line-height: 1;
+            text-transform: uppercase;
+            padding: 4px 7px;
+            border-radius: 12px;
+            top: -18px;
+            -webkit-transition: all .2s ease-in-out;
+            transition: all .2s ease-in-out;
+        }
+        .search-option div span::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 50%;
+            -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
+            border-top: 4px solid #929AA3;
+            border-left: 4px solid transparent;
+            border-right: 4px solid transparent;
+            -webkit-transition: all .2s ease-in-out;
+            transition: all .2s ease-in-out;
+        }
+        .search-option div:hover span {
+            opacity: 1;
+            top: -21px;
+        }
+        .search-option div label {
+            display: block;
+            cursor: pointer;
+        }
+        .search-option div svg {
+            height: 20px;
+            width: 20px;
+            fill: #5a6674;
+            opacity: 0.6;
+            -webkit-transition: all .2s ease-in-out;
+            transition: all .2s ease-in-out;
+            pointer-events: none;
+        }
+        .search-option div:hover svg {
+            opacity: 1;
+        }
+        .search-option div input:checked + label svg {
+            fill: #e24040;
+            opacity: .9;
+        }
+        .search-option div input:checked + label span {
+            background: #e24040;
+        }
+        .search-option div input:checked + label span::after {
+            border-top-color: #e24040;
+        }
+
+        .results{
+            margin-top: 20px;
+            margin-left: 100px;
+            width: 90%;
+            height: auto;
+        }
+    </style>
+
+    <script>
+        var date=new Date().format('d-m-Y');
+    </script>
+    <html style="height: 100%;">
+    <div id="info_bill">
+        <h1 style="float: left;"> <img style="width: 40px; height: 40px;" src="{{ asset('uploads/star.png') }}"> <span>Star Hotel</span> </h1>
+        <p><h3>Follow us <i class="fa fa-twitter"></i>  @starhotel</h3></p>
+        <p style="float: right; font-size: 25px; margin-top: 25px;">
+            <script> document.write(new Date().toDateString()); </script>
+        </p>
+    </div>
+        <div class="searchform cf">
+            <div style="float: left; position: relative"><span style="vertical-align: middle;line-height: 40px;"> Start Date:</span><input style="float: right;" type="date" id="s_date" placeholder="Start Date"> </div>
+            <div style="float: left; position: relative"> <span style="vertical-align: middle;line-height: 40px;"> End Date: </span><input style="float: right;" type="date" id="e_date" placeholder="End Date"></div>
+            <button id="search_by_date" style="margin-left: 10px; margin-top: 3px;" onclick="searchByDate()">Go</button>
+        </div>
+
+    {%  if is_granted('ROLE_RECEPTIONIST') or is_granted('ROLE_MANAGER') or is_granted('ROLE_OFFICE') or is_granted('ROLE_FINANCE') %}
+
+    <div class="search-form" id="search_form">
+        <input type="search" value="" placeholder="Search" class="search-input" id="search_by_type">
+        <button class="search-button">
+            <svg class="submit-button">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#search"></use>
+            </svg>
+        </button>
+        <div class="search-option">
+            <div>
+                <input name="type" type="radio" value="type-users" id="type-users" checked="">
+                <label for="type-users">
+                    <svg class="edit-pen-title">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#user"></use>
+                    </svg>
+                    <span>Clients</span>
+                </label>
+            </div>
+
+            <div>
+                <input name="type" type="radio" value="type-special" id="type-special">
+                <label for="type-special">
+                    <svg class="edit-pen-title">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#special"></use>
+                    </svg>
+                    <span>Rooms</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" display="none">
+        <symbol id="search" viewBox="0 0 32 32">
+            <path d="M 19.5 3 C 14.26514 3 10 7.2651394 10 12.5 C 10 14.749977 10.810825 16.807458 12.125 18.4375 L 3.28125 27.28125 L 4.71875 28.71875 L 13.5625 19.875 C 15.192542 21.189175 17.250023 22 19.5 22 C 24.73486 22 29 17.73486 29 12.5 C 29 7.2651394 24.73486 3 19.5 3 z M 19.5 5 C 23.65398 5 27 8.3460198 27 12.5 C 27 16.65398 23.65398 20 19.5 20 C 15.34602 20 12 16.65398 12 12.5 C 12 8.3460198 15.34602 5 19.5 5 z" />
+        </symbol>
+        <symbol id="user" viewBox="0 0 32 32">
+            <path d="M 16 4 C 12.145852 4 9 7.1458513 9 11 C 9 13.393064 10.220383 15.517805 12.0625 16.78125 C 8.485554 18.302923 6 21.859881 6 26 L 8 26 C 8 21.533333 11.533333 18 16 18 C 20.466667 18 24 21.533333 24 26 L 26 26 C 26 21.859881 23.514446 18.302923 19.9375 16.78125 C 21.779617 15.517805 23 13.393064 23 11 C 23 7.1458513 19.854148 4 16 4 z M 16 6 C 18.773268 6 21 8.2267317 21 11 C 21 13.773268 18.773268 16 16 16 C 13.226732 16 11 13.773268 11 11 C 11 8.2267317 13.226732 6 16 6 z" /></symbol>
+        <symbol id="special" viewbox="0 0 32 32">
+            <path d="M 4 4 L 4 5 L 4 27 L 4 28 L 5 28 L 27 28 L 28 28 L 28 27 L 28 5 L 28 4 L 27 4 L 5 4 L 4 4 z M 6 6 L 26 6 L 26 26 L 6 26 L 6 6 z M 16 8.40625 L 13.6875 13.59375 L 8 14.1875 L 12.3125 18 L 11.09375 23.59375 L 16 20.6875 L 20.90625 23.59375 L 19.6875 18 L 24 14.1875 L 18.3125 13.59375 L 16 8.40625 z M 16 13.3125 L 16.5 14.40625 L 17 15.5 L 18.1875 15.59375 L 19.40625 15.6875 L 18.5 16.5 L 17.59375 17.3125 L 17.8125 18.40625 L 18.09375 19.59375 L 17 19 L 16 18.40625 L 15 19 L 14 19.59375 L 14.3125 18.40625 L 14.5 17.3125 L 13.59375 16.5 L 12.6875 15.6875 L 13.90625 15.59375 L 15.09375 15.5 L 15.59375 14.40625 L 16 13.3125 z" />
+        </symbol>
+    </svg>
+{% endif %}
+    <div id="results" class="results">
+
+    </div>
+
+
+    </html>
+
+    <script>
+
+        function searchByDate(){
+            var starting_date=$("#s_date").val();
+            var ending_date=$("#e_date").val();
+            console.log(starting_date+" --> "+ending_date);
+
+            if(starting_date>ending_date){
+                bootbox.alert("Ending date must be later than starting date. Check again!");
+            }else{
+                $.ajax({
+                    url: "{{ path('search_by_date') }}",
+                    type: 'POST',
+                    data: {'s_date': starting_date,
+                        'e_date': ending_date,
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        $('#results').html(response);
+                    }
+                });
+            }
+        }
+
+
+        $('.search-input').focus(function(){
+            $(this).parent().addClass('focus');
+        }).blur(function(){
+            $(this).parent().removeClass('focus');
+        })
+
+
+        var elem = document.getElementById("search_by_type");
+        elem.onkeyup = function(e){
+            if(e.keyCode == 13){
+                var type=$('input[name=type]:checked', '#search_form').val();
+                var to_search=$("#search_by_type").val();
+                console.log(to_search+" + "+type);
+                if(type=="type-users"){
+                    $.ajax({
+                        url: "{{ path('search_by_client') }}",
+                        type: 'POST',
+                        data: { 'search': to_search
+                        },
+                        dataType: 'json',
+                        success: function (response) {
+                            $('#results').html(response);
+                        }
+
+                    });
+                }else{
+                    $.ajax({
+                        url: "{{ path('search_by_room') }}",
+                        type: 'POST',
+                        data: { 'search': to_search
+                        },
+                        dataType: 'json',
+                        success: function (response) {
+                            $('#results').html(response);
+                        }
+
+                    });
+
+                }
+            }
+        }
+
+    </script>
+{% endblock %}

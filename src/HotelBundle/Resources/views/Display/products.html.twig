@@ -1,0 +1,291 @@
+{% extends 'HotelBundle:Default:base.html.twig' %}
+{% block content %}
+    <style>
+        .add-btn{
+            position: absolute;
+            top: 80px;
+            float: right;
+            margin-right: 30px;
+            padding: 6px 12px;
+        }
+        label {
+            width:150px;
+            display: inline-block;
+        }
+
+    </style>
+
+
+    <div class="mainArea">
+
+        <button id="add-product" class="btn btn-primary add-btn"><i class="fa fa-plus-square-o" aria-hidden="true"></i>
+            Product</button>
+        <div class="table-purple">
+
+            <div class="row header-purple">
+
+                {% if products|length!=0 %}
+                <div class="cell">
+                    Name
+                </div>
+
+                <div class="cell">
+                    Type
+                </div>
+                <div class="cell">
+                    Quantity/Selling Price (ALL)
+                </div>
+
+                <div class="cell">
+                    Actions
+                </div>
+            </div>
+
+
+            {% for p in products %}
+                <div class="row">
+                    <div class="cell">
+                        {{ p.name }}
+                    </div>
+
+                    <div class="cell">
+                        {% if p.type==0 %}
+                        Raw material
+                        {% else %}
+                        Product
+                        {% endif %}
+                    </div>
+                    <div class="cell">
+                        {% if p.forSelling==0 %}
+                            {{ p.quantity }}  {{ p.unit }}
+                        {% else %}
+                            Selling price: {{ p.selling }}
+                        {% endif %}
+
+
+                    </div>
+
+                    <div class="cell">
+                        <i class="fa fa-pencil-square-o fa-2 add-yellow add-movement" aria-hidden="true" onclick="editProduct( {{ p.id }}, '{{ p.name }}', '{{ p.unit }}', '{{ p.quantity }}', '{{ p.forSelling }}', '{{ p.selling }}' )"></i>
+                        <i class="fa fa-trash fa-3 add-red add-movement" style="margin-left: 10px;" aria-hidden="true" onclick="deleteProduct({{ p.id }})"></i>
+                        {% if p.type==1 %}
+                            <i class="ion-ios-list-outline add-green add-movement" style="margin-left: 10px;" aria-hidden="true" onclick="listIngredients({{ p.id }})"></i>
+                        {% endif %}
+
+
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% else %}
+            <span class="cell" style="text-align: center;">No products registered</span>
+        </div>
+        {% endif %}
+    </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+
+        $("#add-product").on("click", function(event) {
+            var products;
+            var bootbox_dialog;
+            $.ajax({
+                url: "{{ path('insertproduct') }}",
+                type: 'POST',
+                data: {
+
+                },
+                success: function (response) {
+
+                    products = response;
+                        bootbox_dialog = bootbox.dialog({
+                            size: "large",
+                            message: products,
+                            closeButton: true
+                        });
+
+                        bootbox_dialog.find("div.modal-dialog").css({"width": "70%"});
+                        bootbox_dialog.find("div.modal-content").css({"margin-top": "20px"});
+                        bootbox_dialog.find("div.modal-content").css({"padding-top": "10px"});
+
+                }
+            });
+
+        });
+        function editProduct(id, product, unit, quantity, selling, price){
+            if(selling==0){
+                bootbox.confirm("<form id='infos' action=''>\
+                <label>Product:</label><input type='text' id='product_n' value='"+product+"' name='product_n' /><br/>\
+                <label>Quantity:</label><input type='number' step=0.01 id='product_q' value='"+quantity+"' name='product_q' /><br/>\
+                <label>Unit:</label><input type='text' id='product_u' value='"+unit+"' name='product_u' /><br/>\
+             </form>", function(result) {
+                    if(result) {
+                        var check="";
+                        var product=$('#product_n').val();
+                        if(product=="")
+                            check+="Product";
+                        var unit=$('#product_u').val();
+                        if(unit=="")
+                            check+=" - "+"Unit";
+                        var quantity=$('#product_q').val();
+                        if(quantity=="")
+                            check+=" - "+"Quantity";
+                        if(check!=""){
+                            bootbox.alert("Please fullfill all the information required. Missing :"+check);
+
+                        }else {
+                            console.log(quantity+" <- "+product);
+
+                            $.ajax({
+                                url: "{{ path('update_product') }}",
+                                type: 'POST',
+                                data: {'id':id,
+                                    'p_name': product,
+                                    'p_quantity': quantity,
+                                    'p_unit': unit,
+                                },
+                                dataType: 'json',
+                                success: function (response) {
+                                    location.reload();
+                                }
+
+                            });
+                        }
+                    }
+                });
+            }else{
+                bootbox.confirm("<form id='infos' action=''>\
+                <label>Product:</label><input type='text' id='product_n' value='"+product+"' name='product_n' /><br/>\
+                <label>Quantity:</label><input type='number' step=0.01 id='product_q' value='"+quantity+"' name='product_q' /><br/>\
+                <label>Unit:</label><input type='text' id='product_u' value='"+unit+"' name='product_u' /><br/>\
+                <label>Price:</label><input type='number' step=0.01 id='product_p' value='"+price+"' name='product_p' /><br/>\
+             </form>", function(result) {
+                    if(result) {
+                        var check="";
+                        var product=$('#product_n').val();
+                        if(product=="")
+                            check+="Product";
+                        var unit=$('#product_u').val();
+                        if(unit=="")
+                            check+=" - "+"Unit";
+                        var quantity=$('#product_q').val();
+                        if(quantity=="")
+                            check+=" - "+"Quantity";
+                        var price=$('#product_p').val();
+                        if(price=="")
+                            check+=" - "+"Price";
+                        if(check!=""){
+                            bootbox.alert("Please fullfill all the information required. Missing :"+check);
+
+                        }else {
+                            console.log(price+" -> "+quantity+" <- "+product);
+                            $.ajax({
+                                url: "{{ path('update_product_with_price') }}",
+                                type: 'POST',
+                                data: {'id':id,
+                                    'p_name': product,
+                                    'p_quantity': quantity,
+                                    'p_unit': unit,
+                                    'p_price': price
+                                },
+                                dataType: 'json',
+                                success: function (response) {
+                                    location.reload();
+                                }
+
+                            });
+                        }
+                    }
+                });
+            }
+
+        }
+
+        function listIngredients(id){
+
+            $.ajax({
+                url: "{{ path('list_ingredients') }}",
+                type: 'POST',
+                data: {'id':id},
+                success: function (response) {
+
+                    var res="";
+                    for(var i=0;i<response[1].length;i++){
+                    res+="<label class='product_name' id='"+response[1][i]['id']+"'>"+response[0][i]+"</label><input type='text' id='product_n' class='product_quantity' value='"+response[1][i]['quantity']+"' name='product_quantity' /><br/>";
+                    }
+//                    response.forEach(function(key, value) {
+//                       console.log(key+" --> "+value);
+//                    });
+                    bootbox.confirm("<form id='infos' action=''>"+ res +"</form>", function(result) {
+                        if(res) {
+                           var quant=document.getElementsByClassName('product_quantity');
+                           var prod=document.getElementsByClassName('product_name');
+                           var products=[];
+                           var quantity=[];
+
+                           for(var j=0; j<prod.length; j++){
+                               products.push(prod[j].id);
+                               quantity.push(quant[j].value);
+
+                           }
+                                $.ajax({
+                                    url: "{{ path('update_list_ingredients') }}",
+                                    type: 'POST',
+                                    data: {'id':id,
+                                        'product': products,
+                                        'quantity': quantity
+                                    },
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        location.reload();
+                                    }
+
+                                });
+
+                        }
+
+                    });
+                }
+//
+            });
+
+        }
+
+        function deleteProduct(id){
+            bootbox.confirm({
+                message: "Are you sure you want to delete this product?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result == true){
+                        $.ajax({
+                            url: "{{ path('delete_product') }}",
+                            type: 'GET',
+                            data: {'id': id },
+                            success: function (response) {
+                                location.reload();
+                            }
+
+                        });
+                    }
+                }
+            });
+
+        }
+    </script>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,458 @@
+<html>
+
+
+ {#   The design of this page is insired by https://codepen.io/afirulaf/pen/djAen   #}
+
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+<style>
+     dl, dt, dd, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+        padding: 0;
+        margin: 0;
+    }
+
+    fieldset,
+    img {
+        border: 0
+    }
+     header .box > ul li {
+         font-size: 12px;
+         font-weight: bold;
+         text-transform: uppercase;
+         margin-left: 100px;
+     }
+    ol,
+    ul,
+    li {
+        list-style: none
+    }
+
+    :focus {
+        outline: none
+    }
+
+
+
+    input,
+    textarea,
+    select {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        color: #4c4c4c;
+    }
+
+    p {
+        font-size: 12px;
+        width: 150px;
+        display: inline-block;
+        margin-left: 18px;
+    }
+
+    h1 {
+        font-size: 32px;
+        font-weight: 300;
+        color: #4c4c4c;
+        text-align: center;
+        padding-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    html {
+        background-color: #ffffff;
+    }
+
+    .testbox {
+        margin: 20px auto;
+        width: 90%;
+        max-height: 500px;
+        overflow-y: scroll;
+        -webkit-border-radius: 8px/7px;
+        -moz-border-radius: 8px/7px;
+        border-radius: 8px/7px;
+        background-color: #ebebeb;
+        -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, .31);
+        -moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, .31);
+        box-shadow: 1px 2px 5px rgba(0, 0, 0, .31);
+        border: solid 1px #cbc9c9;
+    }
+
+    input[type=radio] {
+        visibility: hidden;
+    }
+
+    form {
+        margin: 0 30px;
+    }
+
+    label.radio {
+        cursor: pointer;
+        text-indent: 35px;
+        overflow: visible;
+        display: inline-block;
+        position: relative;
+        margin-bottom: 15px;
+    }
+
+    label.radio:before {
+        background: #3a57af;
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 0;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+    }
+
+    label.radio:after {
+        opacity: 0;
+        content: '';
+        position: absolute;
+        width: 0.8em;
+        height: 0.4em;
+        background: transparent;
+        top: 9.5px;
+        left: 6.5px;
+        border: 3px solid #ffffff;
+        border-top: none;
+        border-right: none;
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+
+    input[type=radio]:checked + label:after {
+        opacity: 1;
+    }
+
+    hr {
+        color: #a9a9a9;
+        opacity: 0.3;
+    }
+
+    input[type=text]
+     {
+        width: 200px;
+        height: 39px;
+        -webkit-border-radius: 0px 4px 4px 0px/5px 5px 4px 4px;
+        -moz-border-radius: 0px 4px 4px 0px/0px 0px 4px 4px;
+        border-radius: 0px 4px 4px 0px/5px 5px 4px 4px;
+        background-color: #fff;
+        -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+        -moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+        box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+        border: solid 1px #cbc9c9;
+        margin-top: 13px;
+        padding-left: 10px;
+    }
+
+
+    #icon {
+        display: inline-block;
+        width: 150px;
+        background-color: #3a57af;
+        padding: 8px 0px 8px 15px;
+        margin-left: 15px;
+        -webkit-border-radius: 4px 0px 0px 4px;
+        -moz-border-radius: 4px 0px 0px 4px;
+        border-radius: 4px 0px 0px 4px;
+        color: white;
+        -webkit-box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+        -moz-box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+        box-shadow: 1px 2px 5px rgba(0, 0, 0, .09);
+        border: solid 0px #cbc9c9;
+    }
+
+    .type {
+        margin-left: 15px;
+        margin-bottom: 30px;
+        disply: inline-block;
+    }
+
+    .forSelling {
+        margin-left: 8px;
+        margin-top: 20px;
+    }
+
+    div.button_add {
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        padding: 6px 12px;
+        display: inline-block;
+        margin: auto;
+        float: left;
+        margin-lefT: 40%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        text-decoration: none;
+        width: 50px;
+        height: 27px;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        background-color: #3a57af;
+        -webkit-box-shadow: 0 3px rgba(58, 87, 175, .75);
+        -moz-box-shadow: 0 3px rgba(58, 87, 175, .75);
+        box-shadow: 0 3px rgba(58, 87, 175, .75);
+        transition: all 0.1s linear 0s;
+        top: 0px;
+        position: relative;
+    }
+
+    .btn-plus{
+        width: 35px;
+        height: 35px;
+        border-radius: 5px;
+        background-color: #3a57af;
+    }
+    div.button_add:hover {
+        top: 3px;
+        background-color: #2e458b;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+    .checkbox + .label--radio {
+        padding-left: 30px;
+        position: relative;
+        cursor: pointer;
+        -webkit-transition: all 300ms;
+        transition: all 300ms;
+    }
+    .checkbox + .label--radio:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: -4px;
+        width: 18px;
+        height: 18px;
+        background: #ddd;
+        border: 3px solid #ddd;
+        border-radius: 4px;
+        -webkit-transition: all 300ms;
+        transition: all 300ms;
+    }
+    .checkbox:checked + .label--radio:before {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: #3a57af;
+        border: 3px solid #ddd;
+        border-radius: 6px;
+        -webkit-transition: all 300ms;
+        transition: all 300ms;
+    }
+
+    .checkbox {
+        display: none;
+        opacity: 0.4;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+    .list__item {
+        margin: 0px;
+        padding: 0px;
+        height: 40px;
+        margin-left:50px;
+    }
+
+    .ingredients{
+        width: 95%;
+        padding: 10px;
+        float: left;
+        margin-left: 15px;
+        margin-bottom: 20px;
+        border: 1px solid #3a57af;
+        border-radius: 7px
+    }
+    ::-webkit-scrollbar {
+        width: 5px;
+        min-height: 4px;
+    }
+    ::-webkit-scrollbar-track-piece {
+        background:  #D8D8D8;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #7C828B;
+    }
+</style>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+<script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
+
+<script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+<script>
+    var products=[];
+    var id=[];
+    var units=[];
+</script>
+
+{% for p in products %}
+    <script>
+        products.push('{{ p.name }}');
+        units.push('{{ p.unit }}');
+        id.push('{{ p.id }}');
+    </script>
+{% endfor %}
+<div class="testbox">
+    <h1>Add a new Product</h1>
+    <form action="/" id="product_form">
+        <hr>
+        <div class="forSelling">
+            <label id="icon" for="name">Product</label>
+            <input type="text" name="name" id="name" placeholder="Name" required/>
+            <span class="list__item" id="list_item">
+            <input class="checkbox" id="time_view1" name="time_view" type="checkbox" onchange="valueChanged()">
+            <label class="label--radio" for="time_view1">
+      <span>For Selling</span>
+            </label>
+            </span>
+        </div>
+        <hr>
+        <div class="type">
+            <label id="icon" for="name">Type</label>
+            <input type="radio" value="raw" id="raw" name="type" checked onchange="changeProduct()"/>
+            <label for="raw" class="radio" chec>Raw Material</label>
+            <input type="radio" value="product" id="product" name="type" onchange="changeProduct()" />
+            <label for="product" class="radio">Product</label>
+        </div>
+
+        <div class="ingredients" id="ingredients" style="display: none">
+            <div class="btn btn-plus" style="float: right;" onclick="addIngredient()"><i class="fa fa-plus fa-4" style="margin-top: 10px; color: white;" aria-hidden="true"></i>
+            </div>
+            <div id="choose"  class='choose' >
+            <select id="select">
+                {% for p in products %}
+                    <option value="{{ p.id }}">{{ p.name }} ({{ p.unit }})</option>
+                {% endfor %}
+            </select>
+            <input type="number" step=0.01 placeholder="Quantity" style="margin-left: 30px;" id="ing"/>
+                <i onclick="removeDiv(this.parentNode)" class="fa fa-minus" aria-hidden="true"></i>
+            </div>
+        </div><br>
+        <div id="quantity_p" style="margin-left: 15px; display: inline-block; float: left; width: 100%; margin-bottom: 20px;">
+        <label id="icon" for="quantity" >Quantity</label>
+        <input type="number" step=0.01 name="quantity" id="quantity"  placeholder="Quantity" />
+        </div>
+
+        <div id="unit" style="margin-left: 15px; display: inline-block; float: left; width: 100%; margin-bottom: 20px;">
+            <label id="icon" for="unit" >Unit</label>
+            <input type="text" name="unit" id="unit_p"  placeholder="Unit (kg,lt,piece)" />
+        </div>
+
+        <div id="sellingPrice" style="display: none; margin-top: 20px; margin-left: 15px;">
+        <label id="icon" for="selling_price">Selling Price</label>
+        <input type="number" step=0.01  name="selling_price" id="selling_price" placeholder="Selling Price" />
+        </div>
+
+        <div onclick="insertProduct()" class="button_add">Add</div>
+    </form>
+</div>
+
+<script>
+
+    function insertProduct()
+    {
+      var name=$("#name").val();
+      var unit=$("#unit").val();
+      var forSelling=$('input[name="time_view"]:checked').length;
+      var type=$('input[name=type]:checked', '#product_form').val();
+      var quantity=$("#quantity").val();
+      if(quantity=="")
+          quantity=0;
+      var ing_id=[];
+      var ing_q=[];
+      var selling=0;
+      if(forSelling==1){
+            selling=$("#selling_price").val();
+            if(selling=="")
+                selling=0;
+        }
+      if(type=="product") {
+          var text_val = $('#ingredients').children().eq(1).text();
+          var all_choose = document.getElementsByClassName("choose");
+          for (var y = 0; y < all_choose.length; y++) {
+              var c=all_choose[y].getElementsByTagName('select')[0].value;
+              ing_id.push(c);
+              var d=all_choose[y].getElementsByTagName('input')[0].value;
+              ing_q.push(d);
+          }
+
+      }else{
+          ing_id.push(0);
+          ing_q.push(0);
+      }
+
+        $.ajax({
+            url: "{{ path('add_product') }}",
+            type: 'POST',
+            data: {'name': name,
+                'forSelling': forSelling,
+                'selling': selling,
+                'type': type,
+                'unit': unit,
+                'quantity': quantity,
+                'ing_id': ing_id,
+                'ing_q': ing_q },
+            dataType: 'json',
+            success: function (response) {
+                location.reload();
+            }
+
+        });
+
+    }
+
+    function valueChanged()
+    {
+        if($('#time_view1').is(":checked")){
+            $("#sellingPrice").show();
+        }
+
+        else {
+            $("#sellingPrice").hide();
+        }
+    }
+
+
+    function changeProduct()
+    {
+        if($('#product').is(":checked")){
+            $("#ingredients").show();
+            $("#quantity_p").hide();
+
+        }
+
+        else {
+            $("#quantity_p").show();
+
+            $("#ingredients").hide();
+        }
+    }
+        function addIngredient()
+    {
+        var options="";
+        for(var z=0; z<products.length; z++) {
+           options+=" <option value='" + id[z] + "'>"+products[z]+" ("+units[z+")</option>";
+        }
+
+        var newdiv = document.createElement('div')
+        newdiv.style.marginTop="20px";
+        newdiv.innerHTML = " <div id='choose' class='choose' style='margin-bottom: 5px; margin-top: 0;'>" +
+            "<select id='select' >" + options + "</select> <input type='number' step=0.01 placeholder='Quantity' style='margin-left: 30px;' id='ing'/> " +
+            " <i onclick=\"removeDiv(this.parentNode)\" class=\"fa fa-minus\" aria-hidden=\"true\"></i></div>"
+        document.getElementById("ingredients").appendChild(newdiv);
+
+    }
+
+    function removeDiv(div){
+        div.parentNode.removeChild(div);
+    }
+
+</script>
+</html>

@@ -1,0 +1,261 @@
+{% extends 'HotelBundle:Default:base.html.twig' %}
+{% block content %}
+    <style>
+        .add-btn{
+            position: absolute;
+            top: 80px;
+            float: right;
+            margin-right: 30px;
+            padding: 6px 12px;
+        }
+        label {
+            width:150px;
+            display: inline-block;
+        }
+
+        figure {
+            margin: 0;
+            padding: 0;
+        }
+
+        img {
+            max-width: 100%;
+            vertical-align: top;
+        }
+
+        .layout_portfolio {
+            text-align: center;
+            margin: 0 0 2em;
+        }
+        .layout_portfolio .layout_description .heading {
+            margin: 0 0 1rem;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        .layout_portfolio .layout_description p {
+            margin: 1rem 0 0;
+        }
+        .layout_portfolio figure {
+            padding: 2em;
+        }
+        .layout_portfolio img {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (min-width: 640px) {
+            .layout_portfolio {
+                text-align: left;
+                overflow: hidden;
+                position: relative;
+            }
+            .layout_portfolio .layout_description {
+                position: absolute;
+                left: 0;
+                right: 80%;
+                top: 0;
+                bottom: 0;
+                padding: 2em;
+                box-sizing: border-box;
+            }
+            .layout_portfolio .layout_description:before {
+                content: "";
+                width: 0;
+                height: 100%;
+                display: inline-block;
+                vertical-align: middle;
+                margin-left: -5px;
+            }
+            .layout_portfolio .layout_contents {
+                display: inline-block;
+            }
+            .layout_portfolio figure {
+                float: right;
+                width: 32%;
+                box-sizing: border-box;
+            }
+            .layout_portfolio.reversed .layout_description {
+                left: 32%;
+                right: 0;
+            }
+            .layout_portfolio.reversed figure {
+                float: left;
+            }
+        }
+
+    </style>
+
+
+    <div class="mainArea">
+        {%  if is_granted('ROLE_RECEPTIONIST') or is_granted('ROLE_MANAGER') or is_granted('ROLE_OFFICE') or is_granted('ROLE_FINANCE') %}
+
+            <button id="add-room" class="btn btn-primary add-btn"><i class="fa fa-plus-square-o" aria-hidden="true"></i>
+                Room</button>
+        {% endif %}
+        {% for r in rooms %}
+
+            <div class="layout_portfolio reversed">
+                <figure>
+                    <img src="{{ asset('uploads/') }}{{ r.photo }}" alt="{{ r.code }}-Photo">
+                    {%  if is_granted('ROLE_RECEPTIONIST') or is_granted('ROLE_MANAGER') or is_granted('ROLE_OFFICE') or is_granted('ROLE_FINANCE') %}
+
+                        <div style="display: inline-block;">
+                            <form action="{{ path('add_photo', { 'id': r.id })  }}" method="post"  enctype = "multipart/form-data">
+                                <input style="display: inline-block;width: 190px;" type="file" id='photo' name="photo">
+                                <input style="display: inline-block;" class="btn btn-success" type="submit" value="OK" name="add_photo" id="add_photo" style="margin-left: 10px;" aria-hidden="true" />
+                            </form>
+                        </div>
+                    {% endif %}
+
+                </figure>
+                <div class="layout_description">
+                    <div class="layout_contents">
+                        <h5 class="heading heading_page">{{ r.code|e('html') }}
+                            {%  if is_granted('ROLE_RECEPTIONIST') or is_granted('ROLE_MANAGER') or is_granted('ROLE_OFFICE') or is_granted('ROLE_FINANCE') %}
+
+                                <span style="float: right; margin-right: 20px;">
+                        <i style="display: inline-block;" class="fa fa-pencil-square-o fa-2 add-yellow add-movement" aria-hidden="true"
+                           onclick="editRoom({{ r.id }}, '{{ r.code }}', '{{ r.description }}','{{ r.beds }}','{{ r.price }}')"></i>
+                        <i class="fa fa-trash fa-3 add-red add-movement" style="margin-left: 10px; display: inline-block;" aria-hidden="true" onclick="deleteRoom({{ r.id }})"></i>
+                        </span>
+                            {% endif %}
+                        </h5>
+                        <p>{{ r.description|e('html') }}</p>
+                        <p>Beds: {{ r.beds }} <span style="float: right; margin-right: 20px;">Price/night: {{ r.price }} ALL</span></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $("#add-room").on("click", function(event) {
+
+            var date=new Date().format('d-m-Y');
+            bootbox.confirm("<form id='infos' action=''>\
+                <label>Room Code:</label><input type='text' id='code' name='fcode' /><br/>\
+                <label>Description:</label><input type='textarea'  rows='2' cols='5' id='description' name='description' /><br/>\
+                <label>Nr, of beds:</label><input type='number' id='beds' name='beds' /><br/>\
+                <label>Price/night (ALL):</label><input type='text' id='price' name='price' /><br/>\
+             </form>", function(result) {
+                if(result) {
+                    var check="";
+                    var code=$('#code').val();
+                    if(code=="")
+                        check+="Room Code";
+                    var description=$('#description').val();
+                    if(description=="")
+                        check+=" - "+"Description";
+                    var beds=$('#beds').val();
+                    if(beds=="")
+                        check+=" - "+"Nr. of beds";
+                    var price=$('#price').val();
+                    if(price=="")
+                        check+=" - "+"Price";
+
+                    if(check!=""){
+                        bootbox.alert("Please fullfill all the information required. Missing :"+check);
+
+                    }else {
+                        $.ajax({
+                            url: "{{ path('add_room') }}",
+                            type: 'POST',
+                            data: {'code': code,
+                                'description': description,
+                                'beds': beds,
+                                'price': price,
+                            },
+                            dataType: 'json',
+                            success: function (response) {
+                                location.reload();
+                            }
+
+                        });
+                    }
+                }
+            });
+        });
+
+        function editRoom(id, code, description, beds, price){
+            bootbox.confirm("<form id='infos' action=''>\
+                 <label>Room Code:</label><input type='text' value='"+code+"' id='code' name='fcode' /><br/>\
+                <label>Description:</label><input type='textarea' value='"+description+"' id='description' name='description' /><br/>\
+                <label>Nr, of beds:</label><input type='number' value='"+beds+"' id='beds' name='beds' /><br/>\
+                <label>Price/night (ALL):</label><input type='text' value='"+price+"' id='price' name='price' /><br/>\
+              </form>", function(result) {
+                if(result) {
+
+                    var check="";
+                    var code=$('#code').val();
+                    if(code=="")
+                        check+="Room Code";
+                    var description=$('#description').val();
+                    if(description=="")
+                        check+=" - "+"Description";
+                    var beds=$('#beds').val();
+                    if(beds=="")
+                        check+=" - "+"Nr. of beds";
+                    var price=$('#price').val();
+                    if(price=="")
+                        check+=" - "+"Price";
+
+                    if(check!=""){
+                        bootbox.alert("Please fullfill all the information required. Missing :"+check);
+
+                    }else {
+                        $.ajax({
+                            url: "{{ path('update_room') }}",
+                            type: 'POST',
+                            data: {'id':id,
+                                'code': code,
+                                'description': description,
+                                'beds': beds,
+                                'price': price  },
+                            dataType: 'json',
+                            success: function (response) {
+                                location.reload();
+                            }
+
+                        });
+                    }
+                }
+            });
+        }
+
+
+
+        function deleteRoom(id){
+            bootbox.confirm({
+                message: "Are you sure you want to delete this room?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if(result == true){
+                        $.ajax({
+                            url: "{{ path('delete_room') }}",
+                            type: 'GET',
+                            data: {'id': id },
+                            success: function (response) {
+                                location.reload();
+                            }
+
+                        });
+                    }
+                }
+            });
+
+        }
+    </script>
+
+{% endblock %}

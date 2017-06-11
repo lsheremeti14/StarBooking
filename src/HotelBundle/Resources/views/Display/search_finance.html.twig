@@ -1,0 +1,135 @@
+<html>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600' rel='stylesheet' type='text/css'>
+<link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+<script src="{{ asset('assets/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery-3.2.1.min.js') }}"></script>
+{% set total_buyings=0%}
+    {% set total_sellings=0%}
+    {% set total_reservations=0%}
+    {% set total_expenses=0%}
+    {% for b in buying %}
+        {% set total_buyings=total_buyings+b.total %}
+    {% endfor %}
+    {% for b in selling %}
+        {% set total_sellings=total_sellings+b.total %}
+    {% endfor %}
+    {% for r in reservations %}
+        {% set total_reservations=total_reservations+r.price %}
+    {% endfor %}
+    {% for o in other_expenses %}
+        {% set total_expenses=total_expenses+o.total %}
+    {% endfor %}
+    {% if selling|length==0 and buying|length==0 and reservations|length==0 and other_expenses|length==0 %}
+<table class="table">
+    <tr class="row header-purple col-md-12">
+        <td class="cell col-md-12" style="text-align: center;">
+            No recordings registered
+        </td>
+    </tr>
+</table>
+    {% else %}
+    <table class="table">
+        <tr class="row header-purple col-md-12">
+            <td class="cell col-md-12" style="text-align: center;">
+                Income statement for Star Hotel
+                <script>document.write(new Date().format('F Y'));</script>
+            </td>
+        </tr>
+        <tr class="row col-md-12">
+            <td  class="cell col-md-6" style="float: left;font-weight: 600;">
+                Revenues
+            </td>
+            <td class="cell col-md-3"></td>
+            <td class="cell col-md-3"></td>
+        </tr>
+        {% if total_sellings != 0 %}
+            <tr class="row col-md-12">
+                <td class="cell col-md-6" style="float: left;">
+                    Revenues from the restaurant
+                </td>
+                <td class="cell col-md-3" style="float:right;text-align: right;">
+                    {{ total_sellings }} ALL
+                </td><td class="col-md-1"></td>
+            </tr>
+        {% endif %}
+        {% if total_reservations !=0 %}
+            <tr class="row col-md-12">
+                <td class="cell col-md-6" style="float: left;">
+                    Revenues from the hotel
+                </td>
+                <td class="cell col-md-3" style="float:right;text-align: right;">
+                    {{ total_reservations }} ALL
+                </td><td class="col-md-1"></td>
+            </tr>
+        {% endif %}
+        <tr class="row col-md-12">
+            <td class="cell col-md-6" style="float: left;font-style: italic;">
+                Total Revenues
+            </td>
+            <td class="cell col-md-3" style="float:right;font-style: italic;text-align: right;font-weight: 600;">
+                {% set r_total=total_reservations+total_sellings %}
+                {{ r_total }} ALL
+            </td><td class="col-md-1"></td>
+        </tr>
+        <tr class="row col-md-12">
+            <td class="cell col-md-6" style="float: left;font-weight: 600;">
+                Expenses
+            </td><td class="cell col-md-3"></td>
+        </tr>
+        {% if total_buyings  != 0 %}
+            <tr class="row col-md-12">
+                <td class="cell col-md-6" style="float: left;">
+                    Purchases
+                </td>
+                <td class="cell col-md-3" style="float:right;">
+                    {{ total_buyings  }} ALL
+                </td>
+            </tr>
+        {% endif %}
+        {% if total_expenses != 0 %}
+            {% for ex in other_expenses %}
+                <tr class="row col-md-12">
+                    <td class="cell col-md-6" style="float: left;">
+                        {{ ex.explanation }}
+                    </td>
+                    <td class="cell col-md-3" style="float:right;">
+                        {{ ex.total  }} ALL
+                    </td>
+                </tr>
+            {% endfor %}
+
+        {% endif %}
+        <tr class="row col-md-12">
+            <td class="cell col-md-6" style="float: left;font-style: italic;">
+                Total Expenses
+            </td>
+            <td class="cell col-md-3" style="float:right;font-style: italic;text-align: right;font-weight: 600;">
+                {% set e_total=total_buyings+total_expenses %}
+                {{ e_total }} ALL
+            </td><td class="col-md-1"></td>
+        </tr>
+        {% set income=r_total-e_total %}
+        {% if income > 0 %}
+            <tr class="row col-md-12">
+                <td class="cell col-md-6" style="float: left;font-style: italic;right;font-weight: 600;">
+                    Net Income
+                </td>
+                <td class="cell col-md-3" style="float:right;font-style: italic;text-align: right;font-weight: 600;">
+                    {{ income }} ALL
+                </td><td class="col-md-1"></td>
+            </tr>
+        {%else%}
+            <tr class="row col-md-12">
+                <td class="cell col-md-6" style="float: left;font-style: italic;right;font-weight: 600;">
+                    Net Loss
+                </td>
+                <td class="cell col-md-3" style="float:right;font-style: italic;text-align: right;font-weight: 600;">
+                    {{ income }} ALL
+                </td><td class="col-md-1"></td>
+            </tr>
+        {%endif%}
+    </table>
+{% endif %}
+
+</html>
