@@ -1,0 +1,4 @@
+username admin
+password admin
+when we put the code in github we accidentaly deleted all the files we had  ( meeteing reports etc) 
+But we put them again 
